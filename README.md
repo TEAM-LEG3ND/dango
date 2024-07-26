@@ -11,8 +11,8 @@ A Flutter app to easily track and request payment for shared expenses.
     _Group {
         ObjectId id
         String name
-        RealmList[_Member] members
-        RealmList[_Expense] expenses
+        List[_Member] members
+        List[_Expense] expenses
     }
     _Expense ||--|{ _Member : sharedWith
     _Expense {
@@ -20,13 +20,13 @@ A Flutter app to easily track and request payment for shared expenses.
         String description
         double amount
         _Member paidBy
-        RealmList[_Member] sharedWith
+        List[_Member] sharedWith
     }
     _Member ||--o{_Expense : paidBy
     _Member {
         ObjectId id
         String name
-        RealmList[_Expense] paidExpense
+        List[_Expense] paidExpense
     }
     
 ```
