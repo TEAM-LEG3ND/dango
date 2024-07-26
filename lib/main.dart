@@ -1,3 +1,4 @@
+import 'package:dango/views/expense_view.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -22,9 +23,7 @@ class _MyAppState extends State<MyApp> {
       appBar: AppBar(
         title: const Text("당고"),
       ),
-      body: const Center(
-
-      ),
+      body: const ExpenseView(),
     );
   }
 }
