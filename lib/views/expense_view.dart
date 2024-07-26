@@ -34,6 +34,9 @@ class _ExpenseViewState extends State<ExpenseView> {
             ),
           ],
         ),
+        const SizedBox(
+          height: 10,
+        ),
         Expanded(
           child: SingleChildScrollView(
             child: Column(
@@ -45,6 +48,27 @@ class _ExpenseViewState extends State<ExpenseView> {
             ),
           ),
         ),
+        Row(
+          children: [
+            Expanded(
+                child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: List.generate(itemCount, (index) {
+                  return Container(
+                      color: Colors.blueAccent,
+                      child: SizedBox(
+                        height: 100,
+                        width: 100,
+                        child: Center(
+                          child: Text('$index'),
+                        ),
+                      ));
+                }),
+              ),
+            )),
+          ],
+        )
       ],
     );
   }
