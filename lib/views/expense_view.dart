@@ -1,4 +1,5 @@
 import 'package:dango/views/widgets/expense_item.dart';
+import 'package:dango/views/widgets/member_item.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:dango/viewmodels/expense_viewmodel.dart';
@@ -66,15 +67,9 @@ class _ExpenseViewState extends State<ExpenseView> {
               scrollDirection: Axis.horizontal,
               child: Row(
                 children: List.generate(itemCount, (index) {
-                  return Container(
-                      color: Colors.blueAccent,
-                      child: SizedBox(
-                        height: 100,
-                        width: 100,
-                        child: Center(
-                          child: Text('$index'),
-                        ),
-                      ));
+                  return MemberItem(
+                    name: index.toString(),
+                  );
                 }),
               ),
             )),

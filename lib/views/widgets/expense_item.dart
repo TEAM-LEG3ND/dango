@@ -13,12 +13,12 @@ class ExpenseItem extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(1.0),
       child: Container(
-        color: Colors.blueAccent,
-        height: 50,
+        color: const Color(0xffFFFFF1),
+        height: 60,
         child: Center(
           child: Text(
             'Item $description',
-            style: const TextStyle(color: Colors.white),
+            style: const TextStyle(color: Colors.black),
           ),
         ),
       ),
