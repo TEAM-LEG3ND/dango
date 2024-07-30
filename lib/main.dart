@@ -1,3 +1,4 @@
+import 'package:dango/viewmodels/expense_viewmodel.dart';
 import 'package:dango/views/expense_view.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -8,6 +9,9 @@ void main() {
     MultiProvider(
         providers: [
           Provider<DatabaseService>(create: (_) => DatabaseService()),
+          ChangeNotifierProvider<ExpenseViewModel>(
+              create: (context) => ExpenseViewModel(Provider.of<DatabaseService>(context, listen: false)),
+          ),
         ],
         child: const MaterialApp(
           home: MyApp(),
@@ -32,7 +36,7 @@ class _MyAppState extends State<MyApp> {
       appBar: AppBar(
         title: const Text("당고"),
       ),
-      body: const Center(),
+      body: const ExpenseView(),
     );
   }
 }

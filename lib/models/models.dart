@@ -2,10 +2,11 @@
 /// 모델 추가 시 여기로 참조 추가 후 -> dart run realm_dart generate 실행
 library;
 
-import 'package:realm_dart/realm.dart';
+import 'package:realm/realm.dart';
+
+part 'models.realm.dart';
 
 part 'member_model.dart';
 part 'expense_model.dart';
 part 'group_model.dart';
 
-part 'models.realm.dart';
