@@ -1,3 +1,5 @@
+import 'package:dango/views/widgets/add_expense_item.dart';
+import 'package:dango/views/widgets/add_member_item.dart';
 import 'package:dango/views/widgets/expense_item.dart';
 import 'package:dango/views/widgets/member_item.dart';
 import 'package:flutter/material.dart';
@@ -32,7 +34,9 @@ class _ExpenseViewState extends State<ExpenseView> {
             ElevatedButton(
               onPressed: () {
                 setState(() {
-                  itemCount -= 1;
+                  if (itemCount > 0) {
+                    itemCount -= 1;
+                  }
                 });
               },
               child: const Text('Remove Item'),
@@ -49,7 +53,7 @@ class _ExpenseViewState extends State<ExpenseView> {
                 return ExpenseItem(
                   description: index.toString(),
                 );
-              }),
+              })..add(const AddExpenseItem()),
             ),
           ),
         ),
@@ -70,7 +74,7 @@ class _ExpenseViewState extends State<ExpenseView> {
                   return MemberItem(
                     name: index.toString(),
                   );
-                }),
+                })..add(const AddMemberItem()),
               ),
             )),
           ],
