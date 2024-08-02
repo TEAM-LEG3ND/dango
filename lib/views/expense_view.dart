@@ -19,6 +19,14 @@ class _ExpenseViewState extends State<ExpenseView> {
   Widget build(BuildContext context) {
     final viewModel = Provider.of<ExpenseViewModel>(context);
 
+    void showAddMemberPopup () {
+      viewModel.showAddMemberPopup(context);
+    }
+
+    void showAddExpensePopup () {
+      viewModel.showAddExpensePopup(context);
+    }
+
     return Column(
       children: <Widget>[
         Row(
@@ -53,7 +61,7 @@ class _ExpenseViewState extends State<ExpenseView> {
                 return ExpenseItem(
                   description: index.toString(),
                 );
-              })..add(const AddExpenseItem()),
+              })..add(AddExpenseItem(addExpense: showAddExpensePopup)),
             ),
           ),
         ),
@@ -74,7 +82,7 @@ class _ExpenseViewState extends State<ExpenseView> {
                   return MemberItem(
                     name: index.toString(),
                   );
-                })..add(const AddMemberItem()),
+                })..add(AddMemberItem(addMember: showAddMemberPopup)),
               ),
             )),
           ],

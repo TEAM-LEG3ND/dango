@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 
 class AddMemberItem extends StatelessWidget {
-  const AddMemberItem({super.key});
+  const AddMemberItem({
+    super.key,
+    required this.addMember,
+  });
+
+  final Function addMember;
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +17,7 @@ class AddMemberItem extends StatelessWidget {
         height: 60,
         child: ElevatedButton(
           // todo 선택 시 멤버 추가
-          onPressed: () => {},
+          onPressed: () => addMember(),
           style: ElevatedButton.styleFrom(
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20),
