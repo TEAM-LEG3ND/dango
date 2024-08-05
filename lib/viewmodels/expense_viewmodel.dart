@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../models/models.dart';
 import '../services/database_service.dart';
@@ -23,26 +22,104 @@ class ExpenseViewModel extends ChangeNotifier {
         builder: (BuildContext context) {
           return Dialog(
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20),
+                borderRadius: BorderRadius.circular(0),
               ),
               child: SizedBox(
                 width: 400,
                 height: 300,
                 child: Column(
                   children: [
-                    const Text(
-                      '멤버 추가하기',
-                      style: TextStyle(
-                        fontSize: 18,
+                    const Expanded(
+                      child: Center(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 8.0),
+                              child: Text(
+                                '멤버 추가',
+                                style: TextStyle(
+                                  fontSize: 22,
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                                height: 32
+                            ), // Spacing between input fields
+                            Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 16.0),
+                              child: TextField(
+                                textAlign: TextAlign.center,
+                                textAlignVertical: TextAlignVertical.center,
+                                decoration: InputDecoration(
+                                  hintText: '새로운 멤버', // Placeholder text
+                                  border: InputBorder.none, // No border
+                                  contentPadding: EdgeInsets.all(16.0), // Padding inside the text field
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                      child: const Text(
-                        '닫기',
+                    // Divider above the buttons
+                    const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 8.0),
+                      child: Divider(
+                        height: 1.5,
+                        thickness: 1,
+                        color: Color.fromARGB(255, 0, 0, 0), // Divider color
                       ),
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: TextButton(
+                            onPressed: () {
+                              Navigator.of(context).pop(); // Close dialog
+                            },
+                            style: TextButton.styleFrom(
+                              foregroundColor:
+                              const Color.fromARGB(255, 0, 0, 0),
+                              minimumSize:
+                              const Size(double.infinity, 50), // Full width
+                              shape: const RoundedRectangleBorder(
+                                borderRadius:
+                                BorderRadius.zero, // No rounded corners
+                              ),
+                            ),
+                            child: const Text('닫기'),
+                          ),
+                        ),
+                        Container(
+                          height:
+                          50, // Ensure the divider takes the full height
+                          padding: const EdgeInsets.only(bottom: 8.0),
+                          child: const VerticalDivider(
+                            width: 1, // Divider thickness
+                            color: Colors.black, // Divider color
+                          ),
+                        ),
+                        Expanded(
+                          child: TextButton(
+                            onPressed: () {
+                              // todo Add confirmation action here
+                              Navigator.of(context).pop(); // Close dialog
+                            },
+                            style: TextButton.styleFrom(
+                              foregroundColor:
+                              const Color.fromARGB(255, 0, 0, 0),
+                              minimumSize:
+                              const Size(double.infinity, 50), // Full width
+                              shape: const RoundedRectangleBorder(
+                                borderRadius:
+                                BorderRadius.zero, // No rounded corners
+                              ),
+                            ),
+                            child: const Text('저장'),
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
@@ -83,39 +160,36 @@ class ExpenseViewModel extends ChangeNotifier {
                         ),
                       ),
                     ),
-                    Expanded(
+                    const Expanded(
                       child: Center(
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 16.0),
+                              padding: EdgeInsets.symmetric(horizontal: 16.0),
                               child: TextField(
                                 textAlign: TextAlign.center,
                                 textAlignVertical: TextAlignVertical.center,
                                 decoration: InputDecoration(
-                                  hintText: '내용', // Placeholder text
+                                  hintText: '우리가 쓴 돈', // Placeholder text
                                   border: InputBorder.none, // No border
-                                  contentPadding: EdgeInsets.all(
-                                      16.0), // Padding inside the text field
+                                  contentPadding: EdgeInsets.all(16.0), // Padding inside the text field
                                 ),
                               ),
                             ),
-                            const SizedBox(
-                                height: 16), // Spacing between input fields
+                            SizedBox(
+                                height: 16
+                            ), // Spacing between input fields
                             Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 16.0),
+                              padding: EdgeInsets.symmetric(horizontal: 16.0),
                               child: TextField(
                                 textAlign: TextAlign.center,
                                 textAlignVertical: TextAlignVertical.center,
                                 decoration: InputDecoration(
                                   prefixText: '\$ ',
-                                  hintText: '0.00', // Placeholder text
+                                  hintText: '\$0.00', // Placeholder text
                                   border: InputBorder.none, // No border
-                                  contentPadding: EdgeInsets.all(
-                                      16.0), // Padding inside the text field
+                                  contentPadding: EdgeInsets.all(16.0), // Padding inside the text field
                                 ),
                               ),
                             ),
@@ -124,8 +198,8 @@ class ExpenseViewModel extends ChangeNotifier {
                       ),
                     ),
                     // Divider above the buttons
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 8.0),
                       child: Divider(
                         height: 1.5,
                         thickness: 1,
@@ -143,8 +217,8 @@ class ExpenseViewModel extends ChangeNotifier {
                               foregroundColor:
                                   const Color.fromARGB(255, 0, 0, 0),
                               minimumSize:
-                                  Size(double.infinity, 50), // Full width
-                              shape: RoundedRectangleBorder(
+                                  const Size(double.infinity, 50), // Full width
+                              shape: const RoundedRectangleBorder(
                                 borderRadius:
                                     BorderRadius.zero, // No rounded corners
                               ),
@@ -153,10 +227,9 @@ class ExpenseViewModel extends ChangeNotifier {
                           ),
                         ),
                         Container(
-                          height:
-                              50, // Ensure the divider takes the full height
+                          height: 50, // Ensure the divider takes the full height
                           padding: const EdgeInsets.only(bottom: 8.0),
-                          child: VerticalDivider(
+                          child: const VerticalDivider(
                             width: 1, // Divider thickness
                             color: Colors.black, // Divider color
                           ),
@@ -164,17 +237,17 @@ class ExpenseViewModel extends ChangeNotifier {
                         Expanded(
                           child: TextButton(
                             onPressed: () {
-                              // Add confirmation action here
+                              // todo Add confirmation action here
                               Navigator.of(context).pop(); // Close dialog
                             },
                             style: TextButton.styleFrom(
                               foregroundColor:
-                                  const Color.fromARGB(255, 0, 0, 0),
+                                const Color.fromARGB(255, 0, 0, 0),
                               minimumSize:
-                                  Size(double.infinity, 50), // Full width
-                              shape: RoundedRectangleBorder(
+                                const Size(double.infinity, 50), // Full width
+                              shape: const RoundedRectangleBorder(
                                 borderRadius:
-                                    BorderRadius.zero, // No rounded corners
+                                  BorderRadius.zero, // No rounded corners
                               ),
                             ),
                             child: const Text('저장'),

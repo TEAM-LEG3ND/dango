@@ -113,13 +113,16 @@ class _ExpenseItemState extends State<ExpenseItem> with SingleTickerProviderStat
                     ),
                     // todo 비용 액수
                     SizedBox(
-                      width: 80,
+                      width: 100,
                       child: Container(
                         alignment: Alignment.centerRight,
                         padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                        color: Colors.blue,
+                        //color: Colors.blue,
                         child: const Text(
-                          '100\$',
+                          '\$10.5',
+                          style: TextStyle(
+                            fontSize: 18,
+                          ),
                         ),
                       ),
                     ),
