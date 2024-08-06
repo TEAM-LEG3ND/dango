@@ -57,11 +57,10 @@ class _ExpenseViewState extends State<ExpenseView> {
         Expanded(
           child: SingleChildScrollView(
             child: Column(
-              children: List.generate(itemCount, (index) {
-                return ExpenseItem(
-                  description: index.toString(),
-                );
-              })..add(AddExpenseItem(addExpense: showAddExpensePopup)),
+              children: [
+                ...viewModel.expenses.map((expense) => ExpenseItem(description: expense.description)),
+                AddExpenseItem(addExpense: showAddExpensePopup),
+              ],
             ),
           ),
         ),
@@ -78,11 +77,10 @@ class _ExpenseViewState extends State<ExpenseView> {
                 child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Row(
-                children: List.generate(itemCount, (index) {
-                  return MemberItem(
-                    name: index.toString(),
-                  );
-                })..add(AddMemberItem(addMember: showAddMemberPopup)),
+                children: [
+                  ...viewModel.members.map((member) => MemberItem(name: member.name)),
+                  AddMemberItem(addMember: showAddMemberPopup),
+                ],
               ),
             )),
           ],
