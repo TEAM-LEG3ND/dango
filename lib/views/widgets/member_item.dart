@@ -26,15 +26,12 @@ class MemberItem extends StatelessWidget {
             elevation: 0,
             shadowColor: Colors.transparent,
           ),
-          child: FittedBox(
-            fit: BoxFit.scaleDown,
-            child: Text(
-              name,
-              style: const TextStyle(
-                fontSize: 24,
-              ),
-              softWrap: false,
+          child: Text(
+            name,
+            style: const TextStyle(
+              fontSize: 22,
             ),
+            overflow: TextOverflow.ellipsis,
           ),
         ),
       ),

@@ -14,6 +14,17 @@ class AddExpenseDialog extends StatefulWidget {
 class _AddExpenseDialogState extends State<AddExpenseDialog> {
   String? selectedMember;
 
+  final TextEditingController _expenseDescriptionCtrl = TextEditingController(text: '님 께서 낸 돈');
+  final TextEditingController _expenseLabelCtrl = TextEditingController(text: '\$0');
+
+  @override
+  void dispose() {
+    _expenseDescriptionCtrl.dispose();
+    _expenseLabelCtrl.dispose();
+
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final viewModel = Provider.of<ExpenseViewModel>(context);
@@ -44,7 +55,6 @@ class _AddExpenseDialogState extends State<AddExpenseDialog> {
                         );
                       }).toList(),
                       onChanged: (String? newValue) {
-                        // Handle dropdown value change
                         setState(() {
                           selectedMember = newValue;
                         });
@@ -56,32 +66,34 @@ class _AddExpenseDialogState extends State<AddExpenseDialog> {
                   ),
                 ),
               ),
-              const Expanded(
+              Expanded(
                 child: Center(
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 16.0),
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
                         child: TextField(
+                          controller: _expenseDescriptionCtrl,
                           textAlign: TextAlign.center,
                           textAlignVertical: TextAlignVertical.center,
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                             hintText: '우리가 쓴 돈', // Placeholder text
                             border: InputBorder.none, // No border
                             contentPadding: EdgeInsets.all(16.0), // Padding inside the text field
                           ),
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                           height: 16
                       ), // Spacing between input fields
                       Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 16.0),
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
                         child: TextField(
+                          controller: _expenseLabelCtrl,
                           textAlign: TextAlign.center,
                           textAlignVertical: TextAlignVertical.center,
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                             prefixText: '\$ ',
                             hintText: '\$0.00', // Placeholder text
                             border: InputBorder.none, // No border
@@ -133,7 +145,26 @@ class _AddExpenseDialogState extends State<AddExpenseDialog> {
                   Expanded(
                     child: TextButton(
                       onPressed: () {
-                        // todo Add confirmation action here
+                        // 비용 낸 멤버 가져오기
+                        Member? paidMember = viewModel.getPaidMemberByName(selectedMember);
+
+                        if (paidMember == null) {
+                          debugPrint('[AddExpenseDialog] 비용 지불한 멤버가 없습니다.');
+                        }
+
+                        // 비용 값 처리
+                        double? expenseValue = double.tryParse(_expenseLabelCtrl.text.replaceAll(RegExp(r'[^0-9.]'), ''));
+
+                        if (expenseValue == null) {
+                          debugPrint('[AddExpenseDialog] 비용 값이 적절하지 않습니다.');
+                        }
+
+                        bool isValid = (paidMember != null && expenseValue != null);
+
+                        if (isValid) {
+                          viewModel.addExpense(_expenseDescriptionCtrl.text, expenseValue, paidMember);
+                        }
+
                         Navigator.of(context).pop(); // Close dialog
                       },
                       style: TextButton.styleFrom(

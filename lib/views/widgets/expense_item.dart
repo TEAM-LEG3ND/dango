@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 
+import '../../models/models.dart';
+
 class ExpenseItem extends StatefulWidget {
   const ExpenseItem({
     super.key,
-    required this.description,
+    required this.expense,
+    required this.removeExpense,
   });
 
-  final String description;
+  final Expense expense;
+  final Function removeExpense;
 
   @override
   State<ExpenseItem> createState() => _ExpenseItemState();
@@ -59,7 +63,7 @@ class _ExpenseItemState extends State<ExpenseItem> with SingleTickerProviderStat
             _handleSwipe(false);
           }
         },
-        onTap: () => debugPrint('Expense item tapped'),
+        onTap: () => debugPrint('Expense item tapped : ${widget.expense.description}'),
         child: Stack(
           children: [
             // 배경색을 표시하는 레이어
@@ -80,9 +84,17 @@ class _ExpenseItemState extends State<ExpenseItem> with SingleTickerProviderStat
                       width: 60,
                       child: Container(
                         color: Colors.green.shade200,
+                        child: Center(
+                          child: Text(
+                            widget.expense.paidBy.first.name,
+                            style: const TextStyle(
+                              fontSize: 18,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          )
+                        ),
                       ),
                     ),
-                    // todo 금액 설명 부분
                     Expanded(
                       child: Container(
                         padding: const EdgeInsets.all(5.0),
@@ -91,18 +103,18 @@ class _ExpenseItemState extends State<ExpenseItem> with SingleTickerProviderStat
                           children: [
                             // 설명
                             Text(
-                              '밥값 ${widget.description}',
+                              widget.expense.description,
                               style: const TextStyle(
                                 fontSize: 18,
                               ),
                             ),
                             const Spacer(),
                             // 공유 멤버 리스트
-                            const SizedBox(
+                            SizedBox(
                               height: 20,
                               child: Text(
-                                'a, b, c',
-                                style: TextStyle(
+                                widget.expense.sharedWith.map((member) => member.name).join(', '),
+                                style: const TextStyle(
                                   fontSize: 14,
                                 ),
                               ),
@@ -111,16 +123,15 @@ class _ExpenseItemState extends State<ExpenseItem> with SingleTickerProviderStat
                         ),
                       ),
                     ),
-                    // todo 비용 액수
                     SizedBox(
                       width: 100,
                       child: Container(
                         alignment: Alignment.centerRight,
                         padding: const EdgeInsets.symmetric(horizontal: 10.0),
                         //color: Colors.blue,
-                        child: const Text(
-                          '\$10.5',
-                          style: TextStyle(
+                        child: Text(
+                          '\$ ${widget.expense.amount.toString()}',
+                          style: const TextStyle(
                             fontSize: 18,
                           ),
                         ),
@@ -142,7 +153,8 @@ class _ExpenseItemState extends State<ExpenseItem> with SingleTickerProviderStat
                   color: Colors.white,
                 ),
                 onPressed: () {
-                  // todo 삭제 로직 추가
+                  // todo 삭제 취소
+                  widget.removeExpense(widget.expense);
                   debugPrint('Delete button pressed');
                 },
                 splashColor: Colors.transparent, // 클릭 시 물결 효과 투명

@@ -14,7 +14,6 @@ class ExpenseView extends StatefulWidget {
 }
 
 class _ExpenseViewState extends State<ExpenseView> {
-  int itemCount = 5;
   @override
   Widget build(BuildContext context) {
     final viewModel = Provider.of<ExpenseViewModel>(context);
@@ -29,28 +28,6 @@ class _ExpenseViewState extends State<ExpenseView> {
 
     return Column(
       children: <Widget>[
-        Row(
-          children: [
-            ElevatedButton(
-              onPressed: () {
-                setState(() {
-                  itemCount += 1;
-                });
-              },
-              child: const Text('Add Item'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                setState(() {
-                  if (itemCount > 0) {
-                    itemCount -= 1;
-                  }
-                });
-              },
-              child: const Text('Remove Item'),
-            ),
-          ],
-        ),
         const SizedBox(
           height: 10,
         ),
@@ -58,7 +35,7 @@ class _ExpenseViewState extends State<ExpenseView> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                ...viewModel.expenses.map((expense) => ExpenseItem(description: expense.description)),
+                ...viewModel.expenses.map((expense) => ExpenseItem(expense: expense, removeExpense: viewModel.removeExpense,)),
                 AddExpenseItem(addExpense: showAddExpensePopup),
               ],
             ),

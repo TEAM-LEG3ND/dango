@@ -12,8 +12,6 @@ class ExpenseViewModel extends ChangeNotifier {
 
   // todo 컨트롤러는 뷰 쪽으로 이동 + 멤버 팝업도 옮겨야 함.
   final TextEditingController _memberNameCtrl = TextEditingController();
-  final TextEditingController _expenseDescriptionCtrl = TextEditingController();
-  final TextEditingController _expenseTextCtrl = TextEditingController();
 
   List<Expense> _expenses = [];
   List<Expense> get expenses => _expenses;
@@ -33,15 +31,17 @@ class ExpenseViewModel extends ChangeNotifier {
 
   void addMember(String name) {
     _databaseService.addMember(name);
+    fetchMembers();
   }
 
-  void addExpense(String description, double amount, String paidMemberName) {
-    Member? paidBy = _databaseService.getMemberByName(paidMemberName);
-    if (paidBy != null) {
-      _databaseService.addExpense(description, amount, paidBy, []);
-    } else {
-      debugPrint('[ExpenseViewModel] paid member is not found');
-    }
+  void addExpense(String description, double amount, Member paidMember) {
+    _databaseService.addExpense(description, amount, paidMember, [paidMember]);
+    fetchExpenses();
+  }
+
+  void removeExpense(Expense expense) {
+    _databaseService.removeExpense(expense.id);
+    fetchExpenses();
   }
 
   void showAddMemberPopup(BuildContext context) {
@@ -171,12 +171,17 @@ class ExpenseViewModel extends ChangeNotifier {
         });
   }
 
+  Member? getPaidMemberByName(String? name) {
+    if (name != null) {
+      String paidMemberName = name;
+      return _databaseService.getMemberByName(paidMemberName);
+    }
+    return null;
+  }
+
   @override
   void dispose() {
     _memberNameCtrl.dispose();
-    _expenseDescriptionCtrl.dispose();
-    _expenseTextCtrl.dispose();
-
     super.dispose();
   }
 }
