@@ -79,19 +79,28 @@ class _ExpenseItemState extends State<ExpenseItem> with SingleTickerProviderStat
                 height: 80,
                 child: Row(
                   children: [
-                    // todo 금액을 낸 멤버 영역
-                    SizedBox(
-                      width: 60,
-                      child: Container(
-                        color: Colors.green.shade200,
-                        child: Center(
-                          child: Text(
-                            widget.expense.paidBy.first.name,
-                            style: const TextStyle(
-                              fontSize: 18,
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 10.0),
+                      child: SizedBox(
+                        width: 60,
+                        height: 50,
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                          decoration: BoxDecoration(
+                            color: Colors.green.shade200,
+                            borderRadius: const BorderRadius.all(
+                              Radius.circular(15),
                             ),
-                            overflow: TextOverflow.ellipsis,
-                          )
+                          ),
+                          child: Center(
+                            child: Text(
+                              widget.expense.paidBy.first.name,
+                              style: const TextStyle(
+                                fontSize: 18,
+                              ),
+                              overflow: TextOverflow.ellipsis,
+                            )
+                          ),
                         ),
                       ),
                     ),
