@@ -21,7 +21,6 @@ class ExpenseItem extends StatefulWidget {
 class _ExpenseItemState extends State<ExpenseItem> with SingleTickerProviderStateMixin{
   late AnimationController _controller;
   late Animation<Offset> _offsetAnimation;
-  bool _isSwiped = false;
   bool _isDeleteScheduled = false;
   Timer? _deleteTimer;
 
@@ -47,7 +46,6 @@ class _ExpenseItemState extends State<ExpenseItem> with SingleTickerProviderStat
 
   void _handleSwipe(bool forward) {
     setState(() {
-      _isSwiped = forward;
       if (forward) {
         _controller.forward();
       } else {
@@ -61,6 +59,10 @@ class _ExpenseItemState extends State<ExpenseItem> with SingleTickerProviderStat
       _isDeleteScheduled = true;
       _deleteTimer = Timer(const Duration(seconds: 3), () {
         widget.removeExpense(widget.expense);
+        setState(() {
+          _controller.reverse();
+          _isDeleteScheduled = false;
+        });
       });
     });
   }
@@ -133,7 +135,9 @@ class _ExpenseItemState extends State<ExpenseItem> with SingleTickerProviderStat
                         padding: const EdgeInsets.all(5.0),
                         alignment: Alignment.centerLeft,
                         child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
+                            const Spacer(),
                             // 설명
                             Text(
                               widget.expense.description,
@@ -143,15 +147,13 @@ class _ExpenseItemState extends State<ExpenseItem> with SingleTickerProviderStat
                             ),
                             const Spacer(),
                             // 공유 멤버 리스트
-                            SizedBox(
-                              height: 20,
-                              child: Text(
-                                widget.expense.sharedWith.map((member) => member.name).join(', '),
-                                style: const TextStyle(
-                                  fontSize: 14,
-                                ),
+                            Text(
+                              widget.expense.sharedWith.map((member) => member.name.trim()).join(', '),
+                              style: const TextStyle(
+                                fontSize: 14,
                               ),
                             ),
+                            const Spacer(),
                           ],
                         ),
                       ),

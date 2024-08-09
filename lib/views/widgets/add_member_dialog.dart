@@ -12,7 +12,7 @@ class AddMemberDialog extends StatefulWidget {
 }
 
 class _AddMemberDialogState extends State<AddMemberDialog> {
-  final TextEditingController _memberNameCtrl = TextEditingController(text: '새로운 멤버');
+  final TextEditingController _memberNameCtrl = TextEditingController();
 
   @override
   void dispose() {
@@ -108,9 +108,11 @@ class _AddMemberDialogState extends State<AddMemberDialog> {
                   Expanded(
                     child: TextButton(
                       onPressed: () {
-                        Member? alreadyMember = viewModel.getMemberByName(_memberNameCtrl.text);
+                        String memberName = _memberNameCtrl.text == "" ? "새로운 멤버" : _memberNameCtrl.text;
+
+                        Member? alreadyMember = viewModel.getMemberByName(memberName);
                         if (alreadyMember == null) { // DB에 이름이 겹치지 않게 함.
-                          viewModel.addMember(_memberNameCtrl.text);
+                          viewModel.addMember(memberName);
                         }
                         Navigator.of(context).pop(); // Close dialog
                       },

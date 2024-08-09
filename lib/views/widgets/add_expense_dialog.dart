@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -14,8 +16,8 @@ class AddExpenseDialog extends StatefulWidget {
 class _AddExpenseDialogState extends State<AddExpenseDialog> {
   String? selectedMember;
 
-  final TextEditingController _expenseDescriptionCtrl = TextEditingController(text: '님 께서 낸 돈');
-  final TextEditingController _expenseLabelCtrl = TextEditingController(text: '\$0');
+  final TextEditingController _expenseDescriptionCtrl = TextEditingController();
+  final TextEditingController _expenseLabelCtrl = TextEditingController();
 
   @override
   void dispose() {
@@ -78,7 +80,7 @@ class _AddExpenseDialogState extends State<AddExpenseDialog> {
                           textAlign: TextAlign.center,
                           textAlignVertical: TextAlignVertical.center,
                           decoration: const InputDecoration(
-                            hintText: '우리가 쓴 돈', // Placeholder text
+                            hintText: '비용에 대한 설명을 적으세요.', // Placeholder text
                             border: InputBorder.none, // No border
                             contentPadding: EdgeInsets.all(16.0), // Padding inside the text field
                           ),
@@ -95,7 +97,7 @@ class _AddExpenseDialogState extends State<AddExpenseDialog> {
                           textAlignVertical: TextAlignVertical.center,
                           decoration: const InputDecoration(
                             prefixText: '\$ ',
-                            hintText: '\$0.00', // Placeholder text
+                            hintText: '\$0', // Placeholder text
                             border: InputBorder.none, // No border
                             contentPadding: EdgeInsets.all(16.0), // Padding inside the text field
                           ),
@@ -149,7 +151,7 @@ class _AddExpenseDialogState extends State<AddExpenseDialog> {
                         Member? paidMember = viewModel.getMemberByName(selectedMember);
 
                         if (paidMember == null) {
-                          debugPrint('[AddExpenseDialog] 비용 지불한 멤버가 없습니다.');
+                          debugPrint('[AddExpenseDialog] 비용을 지불한 멤버를 찾을 수 없습니다.');
                         }
 
                         // 비용 값 처리
@@ -162,7 +164,8 @@ class _AddExpenseDialogState extends State<AddExpenseDialog> {
                         bool isValid = (paidMember != null && expenseValue != null);
 
                         if (isValid) {
-                          viewModel.addExpense(_expenseDescriptionCtrl.text, expenseValue, paidMember);
+                          String description = _expenseDescriptionCtrl.text == "" ? "님이 지불한 돈" : _expenseDescriptionCtrl.text;
+                          viewModel.addExpense(description, expenseValue, paidMember);
                         }
 
                         Navigator.of(context).pop(); // Close dialog
