@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 import '../../models/models.dart';
@@ -20,6 +22,8 @@ class _ExpenseItemState extends State<ExpenseItem> with SingleTickerProviderStat
   late AnimationController _controller;
   late Animation<Offset> _offsetAnimation;
   bool _isSwiped = false;
+  bool _isDeleteScheduled = false;
+  Timer? _deleteTimer;
 
   @override
   void initState() {
@@ -37,6 +41,7 @@ class _ExpenseItemState extends State<ExpenseItem> with SingleTickerProviderStat
   @override
   void dispose() {
     _controller.dispose();
+    _deleteTimer?.cancel(); // 타이머가 실행 중이라면 취소
     super.dispose();
   }
 
@@ -49,6 +54,25 @@ class _ExpenseItemState extends State<ExpenseItem> with SingleTickerProviderStat
         _controller.reverse();
       }
     });
+  }
+
+  void _scheduleDelete() {
+    setState(() {
+      _isDeleteScheduled = true;
+      _deleteTimer = Timer(const Duration(seconds: 3), () {
+        widget.removeExpense(widget.expense);
+      });
+    });
+  }
+
+  void _cancelDelete() {
+    if (_deleteTimer != null && _deleteTimer!.isActive) {
+      _deleteTimer!.cancel(); // 타이머 취소
+      setState(() {
+        _controller.reverse();
+        _isDeleteScheduled = false;
+      });
+    }
   }
 
   @override
@@ -86,9 +110,9 @@ class _ExpenseItemState extends State<ExpenseItem> with SingleTickerProviderStat
                         height: 50,
                         child: Container(
                           padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                          decoration: BoxDecoration(
-                            color: Colors.green.shade200,
-                            borderRadius: const BorderRadius.all(
+                          decoration: const BoxDecoration(
+                            color: Color(0xff95B47E),
+                            borderRadius: BorderRadius.all(
                               Radius.circular(15),
                             ),
                           ),
@@ -150,26 +174,52 @@ class _ExpenseItemState extends State<ExpenseItem> with SingleTickerProviderStat
                 ),
               ),
             ),
-            AnimatedPositioned(
-              duration: const Duration(milliseconds: 200),
-              right: _isSwiped ? 14 : -65,
-              top: 0,
-              bottom: 0,
-              child: IconButton(
-                icon: const Icon(
-                  Icons.delete,
-                  size: 32,
-                  color: Colors.white,
-                ),
-                onPressed: () {
-                  // todo 삭제 취소
-                  widget.removeExpense(widget.expense);
-                  debugPrint('Delete button pressed');
-                },
-                splashColor: Colors.transparent, // 클릭 시 물결 효과 투명
-                highlightColor: Colors.transparent, // 클릭 시 강조 효과 투명
-              ),
+            AnimatedBuilder(
+              animation: _controller,
+              builder: (context, child) {
+                return Positioned(
+                  right: (_controller.value * 65) - 50, // 아이콘이 리스트와 함께 이동하도록 동기화
+                  top: 0,
+                  bottom: 0,
+                  child: IconButton(
+                    icon: const Icon(
+                      Icons.delete,
+                      size: 32,
+                      color: Colors.white,
+                    ),
+                    onPressed: () {
+                      _scheduleDelete();
+                    },
+                    splashColor: Colors.transparent,
+                    highlightColor: Colors.transparent,
+                  ),
+                );
+              },
             ),
+            if (_isDeleteScheduled)
+              Positioned.fill(
+                child: Align(
+                  alignment: Alignment.center,
+                  child: Container(
+                    width: double.infinity,
+                    height: double.infinity,
+                    color: const Color(0xff95B47E),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: TextButton(
+                        onPressed: _cancelDelete,
+                        child: const Text(
+                          '삭제 취소 ↵',
+                          style: TextStyle(
+                            color: Colors.black45,
+                            fontSize: 18,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
           ],
         ),
       ),
