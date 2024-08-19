@@ -1,23 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../../models/models.dart';
+import '../../viewmodels/expense_viewmodel.dart';
 
 class MemberItem extends StatelessWidget {
   const MemberItem({
     super.key,
-    required this.name,
+    required this.member,
   });
 
-  final String name;
+  final Member member;
 
   @override
   Widget build(BuildContext context) {
+    final viewModel = Provider.of<ExpenseViewModel>(context);
+
     return Padding(
       padding: const EdgeInsets.all(15.0),
       child: SizedBox(
         width: 80,
         height: 60,
         child: ElevatedButton(
-          // todo 선택 시 토글
-          onPressed: () => {},
+          onPressed: () => viewModel.selectMember(member),
           style: ElevatedButton.styleFrom(
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20),
@@ -27,7 +32,7 @@ class MemberItem extends StatelessWidget {
             shadowColor: Colors.transparent,
           ),
           child: Text(
-            name,
+            member.name.toString(),
             style: const TextStyle(
               fontSize: 22,
             ),

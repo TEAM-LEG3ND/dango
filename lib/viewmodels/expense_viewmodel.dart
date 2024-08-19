@@ -11,6 +11,9 @@ class ExpenseViewModel extends ChangeNotifier {
     fetchMembers();
   }
 
+  Member? _selectedMember;
+  Member? get selectedMember => _selectedMember;
+
   List<Expense> _expenses = [];
   List<Expense> get expenses => _expenses;
 
@@ -67,5 +70,14 @@ class ExpenseViewModel extends ChangeNotifier {
       return _databaseService.getMemberByName(memberName);
     }
     return null;
+  }
+
+  void selectMember(Member member) {
+    if (_selectedMember == member) {
+      _selectedMember = null;
+    } else {
+      _selectedMember = member;
+    }
+    notifyListeners();
   }
 }

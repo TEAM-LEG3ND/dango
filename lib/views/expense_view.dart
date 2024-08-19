@@ -55,7 +55,7 @@ class _ExpenseViewState extends State<ExpenseView> {
               scrollDirection: Axis.horizontal,
               child: Row(
                 children: [
-                  ...viewModel.members.map((member) => MemberItem(name: member.name)),
+                  ...viewModel.members.map((member) => MemberItem(member: member)),
                   AddMemberItem(addMember: showAddMemberPopup),
                 ],
               ),
