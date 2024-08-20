@@ -71,7 +71,11 @@ class DatabaseService {
   }
 
   // 비용에서 공유 멤버 추가
-  void addMemberToExpense(ObjectId expenseId, Member member) {
+  void addMemberToExpense(ObjectId expenseId, Member? member) {
+    if (member == null) {
+      return;
+    }
+
     final expense = realm.find<Expense>(expenseId);
     if (expense != null) {
       realm.write(() {
@@ -81,7 +85,11 @@ class DatabaseService {
   }
 
   // 비용에서 공유 멤버 제거
-  void removeMemberFromExpense(ObjectId expenseId, Member member) {
+  void removeMemberFromExpense(ObjectId expenseId, Member? member) {
+    if (member == null) {
+      return;
+    }
+
     final expense = realm.find<Expense>(expenseId);
     if (expense != null) {
       realm.write(() {

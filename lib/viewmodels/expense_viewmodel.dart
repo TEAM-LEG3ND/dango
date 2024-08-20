@@ -91,4 +91,13 @@ class ExpenseViewModel extends ChangeNotifier {
   bool hasSelectedMemberInShared(Expense expense) {
       return _databaseService.hasMemberOnExpense(expense, _selectedMember);
   }
+
+  void onToggleExpense(Expense expense) {
+    if (hasSelectedMemberInShared(expense)) {
+      _databaseService.removeMemberFromExpense(expense.id, _selectedMember);
+    } else {
+      _databaseService.addMemberToExpense(expense.id, _selectedMember);
+    }
+    fetchExpenses();
+  }
 }

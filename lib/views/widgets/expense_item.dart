@@ -93,7 +93,7 @@ class _ExpenseItemState extends State<ExpenseItem> with SingleTickerProviderStat
             _handleSwipe(false);
           }
         },
-        onTap: () => debugPrint('Expense item tapped : ${widget.expense.description}'),
+        onTap: () => viewModel.onToggleExpense(widget.expense),
         child: Stack(
           children: [
             // 배경색을 표시하는 레이어
