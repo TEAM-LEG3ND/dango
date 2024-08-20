@@ -87,4 +87,8 @@ class ExpenseViewModel extends ChangeNotifier {
     }
     notifyListeners();
   }
+
+  bool hasSelectedMemberInShared(Expense expense) {
+      return _databaseService.hasMemberOnExpense(expense, _selectedMember);
+  }
 }

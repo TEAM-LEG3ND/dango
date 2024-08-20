@@ -1,8 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../models/models.dart';
+import '../../viewmodels/expense_viewmodel.dart';
 
 class ExpenseItem extends StatefulWidget {
   const ExpenseItem({
@@ -79,6 +81,8 @@ class _ExpenseItemState extends State<ExpenseItem> with SingleTickerProviderStat
 
   @override
   Widget build(BuildContext context) {
+    final viewModel = Provider.of<ExpenseViewModel>(context);
+
     return Padding(
       padding: const EdgeInsets.all(1.5),
       child: GestureDetector(
@@ -101,7 +105,9 @@ class _ExpenseItemState extends State<ExpenseItem> with SingleTickerProviderStat
             SlideTransition(
               position: _offsetAnimation,
               child: Container(
-                color: const Color(0xffFFFFF1),
+                color: viewModel.hasSelectedMemberInShared(widget.expense)
+                    ? const Color(0xffC9958C)
+                    : const Color(0xffFFFFF1),
                 height: 80,
                 child: Row(
                   children: [
@@ -112,10 +118,18 @@ class _ExpenseItemState extends State<ExpenseItem> with SingleTickerProviderStat
                         height: 50,
                         child: Container(
                           padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                          decoration: const BoxDecoration(
-                            color: Color(0xff95B47E),
-                            borderRadius: BorderRadius.all(
+                          decoration: BoxDecoration(
+                            color: widget.expense.paidBy.first == viewModel.selectedMember
+                                ? const Color(0xffC9958C)
+                                : const Color(0xff95B47E),
+                            borderRadius: const BorderRadius.all(
                               Radius.circular(15),
+                            ),
+                            border: Border.all(
+                              color: Colors.white,
+                              width: viewModel.hasSelectedMemberInShared(widget.expense)
+                                  ? 2.0
+                                  : 0.0,
                             ),
                           ),
                           child: Center(

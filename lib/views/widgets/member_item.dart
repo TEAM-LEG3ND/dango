@@ -30,7 +30,7 @@ class MemberItem extends StatelessWidget {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20),
                 ),
-                backgroundColor: const Color(0xff95B47E),
+                backgroundColor: viewModel.selectedMember == member ? const Color(0xffC9958C) : const Color(0xff95B47E),
                 elevation: 0,
                 shadowColor: Colors.transparent,
               ),

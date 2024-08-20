@@ -90,6 +90,13 @@ class DatabaseService {
     }
   }
 
+  bool hasMemberOnExpense(Expense expense, Member? member) {
+    if (member == null) {
+      return false;
+    }
+    return expense.sharedWith.contains(member);
+  }
+
   // 그룹에 멤버 추가
   void addMemberToGroup(ObjectId groupId, Member member) {
     final group = realm.find<Group>(groupId);
