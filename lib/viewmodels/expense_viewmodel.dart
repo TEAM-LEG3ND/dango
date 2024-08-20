@@ -45,6 +45,13 @@ class ExpenseViewModel extends ChangeNotifier {
     fetchExpenses();
   }
 
+  void removeMember(Member member) {
+    _databaseService.removeMember(member.id);
+    _selectedMember = null;
+    fetchExpenses();
+    fetchMembers();
+  }
+
   void showAddMemberPopup(BuildContext context) {
 
     showDialog(
