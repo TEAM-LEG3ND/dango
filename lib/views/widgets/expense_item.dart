@@ -136,9 +136,10 @@ class _ExpenseItemState extends State<ExpenseItem> with SingleTickerProviderStat
                             child: Text(
                               widget.expense.paidBy.first.name,
                               style: const TextStyle(
-                                fontSize: 18,
+                                fontSize: 16,
                               ),
-                              overflow: TextOverflow.ellipsis,
+                              overflow: TextOverflow.clip,
+                              maxLines: 1,
                             )
                           ),
                         ),
@@ -158,6 +159,8 @@ class _ExpenseItemState extends State<ExpenseItem> with SingleTickerProviderStat
                               style: const TextStyle(
                                 fontSize: 18,
                               ),
+                              overflow: TextOverflow.clip,
+                              maxLines: 1,
                             ),
                             const Spacer(),
                             // 공유 멤버 리스트
@@ -183,6 +186,8 @@ class _ExpenseItemState extends State<ExpenseItem> with SingleTickerProviderStat
                           style: const TextStyle(
                             fontSize: 18,
                           ),
+                          overflow: TextOverflow.clip,
+                          maxLines: 1,
                         ),
                       ),
                     ),

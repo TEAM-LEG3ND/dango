@@ -16,7 +16,6 @@ class AddMemberItem extends StatelessWidget {
         width: 80,
         height: 60,
         child: ElevatedButton(
-          // todo 선택 시 멤버 추가
           onPressed: () => addMember(),
           style: ElevatedButton.styleFrom(
             shape: RoundedRectangleBorder(

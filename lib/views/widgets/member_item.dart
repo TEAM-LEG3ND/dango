@@ -33,13 +33,15 @@ class MemberItem extends StatelessWidget {
                 backgroundColor: viewModel.selectedMember == member ? const Color(0xffC9958C) : const Color(0xff95B47E),
                 elevation: 0,
                 shadowColor: Colors.transparent,
+                padding: const EdgeInsets.symmetric(horizontal: 10), // 패딩을 넣어 텍스트 공간 확보
               ),
               child: Text(
                 member.name.toString(),
                 style: const TextStyle(
-                  fontSize: 22,
+                  fontSize: 18,
                 ),
-                overflow: TextOverflow.ellipsis,
+                overflow: TextOverflow.clip,
+                maxLines: 1,
               ),
             ),
           ),
