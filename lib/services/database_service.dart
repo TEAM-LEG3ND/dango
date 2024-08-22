@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:realm/realm.dart';
 import '../models/models.dart';
 
@@ -42,6 +44,7 @@ class DatabaseService {
     final member = realm.find<Member>(id);
     if (member != null) {
       realm.write(() {
+        realm.deleteMany(member.paidExpenses);
         realm.delete(member);
       });
     }
@@ -68,13 +71,38 @@ class DatabaseService {
   }
 
   // 비용에서 공유 멤버 추가
-  void addMemberToExpense(ObjectId expenseId, Member member) {
+  void addMemberToExpense(ObjectId expenseId, Member? member) {
+    if (member == null) {
+      return;
+    }
+
     final expense = realm.find<Expense>(expenseId);
     if (expense != null) {
       realm.write(() {
         expense.sharedWith.add(member);
       });
     }
+  }
+
+  // 비용에서 공유 멤버 제거
+  void removeMemberFromExpense(ObjectId expenseId, Member? member) {
+    if (member == null) {
+      return;
+    }
+
+    final expense = realm.find<Expense>(expenseId);
+    if (expense != null) {
+      realm.write(() {
+        expense.sharedWith.remove(member);
+      });
+    }
+  }
+
+  bool hasMemberOnExpense(Expense expense, Member? member) {
+    if (member == null) {
+      return false;
+    }
+    return expense.sharedWith.contains(member);
   }
 
   // 그룹에 멤버 추가

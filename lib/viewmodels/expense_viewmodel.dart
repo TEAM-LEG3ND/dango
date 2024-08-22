@@ -45,6 +45,13 @@ class ExpenseViewModel extends ChangeNotifier {
     fetchExpenses();
   }
 
+  void removeMember(Member member) {
+    _databaseService.removeMember(member.id);
+    _selectedMember = null;
+    fetchExpenses();
+    fetchMembers();
+  }
+
   void showAddMemberPopup(BuildContext context) {
 
     showDialog(
@@ -79,5 +86,18 @@ class ExpenseViewModel extends ChangeNotifier {
       _selectedMember = member;
     }
     notifyListeners();
+  }
+
+  bool hasSelectedMemberInShared(Expense expense) {
+      return _databaseService.hasMemberOnExpense(expense, _selectedMember);
+  }
+
+  void onToggleExpense(Expense expense) {
+    if (hasSelectedMemberInShared(expense)) {
+      _databaseService.removeMemberFromExpense(expense.id, _selectedMember);
+    } else {
+      _databaseService.addMemberToExpense(expense.id, _selectedMember);
+    }
+    fetchExpenses();
   }
 }

@@ -18,11 +18,11 @@ class _ExpenseViewState extends State<ExpenseView> {
   Widget build(BuildContext context) {
     final viewModel = Provider.of<ExpenseViewModel>(context);
 
-    void showAddMemberPopup () {
+    void showAddMemberPopup() {
       viewModel.showAddMemberPopup(context);
     }
 
-    void showAddExpensePopup () {
+    void showAddExpensePopup() {
       viewModel.showAddExpensePopup(context);
     }
 
@@ -35,7 +35,10 @@ class _ExpenseViewState extends State<ExpenseView> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                ...viewModel.expenses.map((expense) => ExpenseItem(expense: expense, removeExpense: viewModel.removeExpense,)),
+                ...viewModel.expenses.map((expense) => ExpenseItem(
+                      expense: expense,
+                      removeExpense: viewModel.removeExpense,
+                    )),
                 AddExpenseItem(addExpense: showAddExpensePopup),
               ],
             ),
@@ -51,17 +54,20 @@ class _ExpenseViewState extends State<ExpenseView> {
         Row(
           children: [
             Expanded(
-                child: SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: [
-                  ...viewModel.members.map((member) => MemberItem(member: member)),
-                  AddMemberItem(addMember: showAddMemberPopup),
-                ],
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: [
+                    ...viewModel.members.map((member) => MemberItem(
+                      member: member,
+                    )),
+                    AddMemberItem(addMember: showAddMemberPopup),
+                  ],
+                ),
               ),
-            )),
+            ),
           ],
-        )
+        ),
       ],
     );
   }
