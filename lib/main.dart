@@ -1,9 +1,10 @@
-import 'package:dango/services/navigation_service.dart';
 import 'package:dango/viewmodels/expense_viewmodel.dart';
 import 'package:dango/views/expense_view.dart';
+import 'package:dango/views/widgets/app_bar_base.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import './services/database_service.dart';
+import './services/navigation_service.dart';
 
 void main() {
   final navigationService = NavigationService();
@@ -19,10 +20,8 @@ void main() {
         ],
         child: MaterialApp(
           navigatorKey: navigationService.navigatorKey,
-          initialRoute: '/',
           routes: {
-            '/': (context) => const MyApp(),
-            // ex) '/expense': (context) => const ExpenseView(),
+            '/expense': (context) => const ExpenseView(),
           },
           home: const MyApp(),
         )),
@@ -43,11 +42,9 @@ class _MyAppState extends State<MyApp> {
     final databaseService = Provider.of<DatabaseService>(context);
     final navigationService = Provider.of<NavigationService>(context);
 
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("당고"),
-      ),
-      body: const ExpenseView(),
+    return const Scaffold(
+      appBar: AppBarBase(),
+      body: ExpenseView(),
     );
   }
 }
