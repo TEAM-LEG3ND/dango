@@ -1,7 +1,16 @@
 import 'package:flutter/material.dart';
 
 class AppBarBase extends StatelessWidget implements PreferredSizeWidget {
-  const AppBarBase({super.key});
+  const AppBarBase({
+    super.key,
+    required this.leadingText,
+    required this.title,
+    required this.actionText,
+  });
+
+  final String title;
+  final String leadingText;
+  final String actionText;
 
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
@@ -9,21 +18,21 @@ class AppBarBase extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      title: const Text("당고"),
+      title: Text(title),
       centerTitle: true,
       leadingWidth: 80,
       leading: Center(
         child: GestureDetector(
           // todo 화면 뒤로 가기
           onTap: () {},
-          child: const Row(
+          child: Row(
             children: [
-              SizedBox(width: 8),
-              Icon(Icons.arrow_back),
-              SizedBox(width: 4),
+              const SizedBox(width: 8),
+              const Icon(Icons.arrow_back),
+              const SizedBox(width: 4),
               Text(
-                '뒤로',
-                style: TextStyle(fontSize: 20),
+                leadingText,
+                style: const TextStyle(fontSize: 20),
               ),
             ],
           ),
@@ -33,16 +42,15 @@ class AppBarBase extends StatelessWidget implements PreferredSizeWidget {
         GestureDetector(
           // todo 화면 이동
           onTap: () {},
-          child: const Row(
+          child: Row(
             children: [
-              SizedBox(width: 4),
+              const SizedBox(width: 4),
               Text(
-                // todo 텍스트 받아서 넣기
-                '정산',
-                style: TextStyle(fontSize: 20),
+                actionText,
+                style: const TextStyle(fontSize: 20),
               ),
-              SizedBox(width: 8),
-              Icon(Icons.arrow_forward),
+              const SizedBox(width: 8),
+              const Icon(Icons.arrow_forward),
             ],
           ),
         ),
