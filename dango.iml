@@ -11,6 +11,7 @@
       <sourceFolder url="file://$MODULE_DIR$/lib/viewmodels" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/lib/views" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/lib/views/widgets" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/lib/pages" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/.idea" />
       <excludeFolder url="file://$MODULE_DIR$/.dart_tool" />
       <excludeFolder url="file://$MODULE_DIR$/.pub" />
