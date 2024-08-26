@@ -8,8 +8,7 @@ class ExpensePage extends StatefulWidget {
   final ObjectId groupId; // Ensure this is the parameter name
   final String groupName;
 
-  const ExpensePage({Key? key, required this.groupId, required this.groupName})
-      : super(key: key);
+  const ExpensePage({super.key, required this.groupId, required this.groupName});
 
   @override
   State<ExpensePage> createState() => _ExpensePageState();
