@@ -1,4 +1,5 @@
 import 'package:dango/viewmodels/expense_viewmodel.dart';
+import 'package:dango/views/list_view.dart';
 import 'package:dango/views/expense_view.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -10,15 +11,17 @@ void main() {
         providers: [
           Provider<DatabaseService>(create: (_) => DatabaseService()),
           ChangeNotifierProvider<ExpenseViewModel>(
-              create: (context) => ExpenseViewModel(Provider.of<DatabaseService>(context, listen: false)),
+            create: (context) => ExpenseViewModel(
+                Provider.of<DatabaseService>(context, listen: false)),
           ),
         ],
         child: const MaterialApp(
-          home: MyApp(),
+          home: ListViewScreen(),
         )),
   );
 }
 
+/*
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
@@ -39,4 +42,4 @@ class _MyAppState extends State<MyApp> {
       body: const ExpenseView(),
     );
   }
-}
+}*/
