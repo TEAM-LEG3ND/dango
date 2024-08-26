@@ -6,11 +6,13 @@ class AppBarBase extends StatelessWidget implements PreferredSizeWidget {
     required this.leadingText,
     required this.title,
     required this.actionText,
+    this.onLeadingTap,
   });
 
   final String title;
   final String leadingText;
   final String actionText;
+  final VoidCallback? onLeadingTap;
 
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
@@ -24,7 +26,7 @@ class AppBarBase extends StatelessWidget implements PreferredSizeWidget {
       leading: Center(
         child: GestureDetector(
           // todo 화면 뒤로 가기
-          onTap: () {},
+          onTap: onLeadingTap,
           child: Row(
             children: [
               const SizedBox(width: 8),

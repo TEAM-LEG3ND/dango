@@ -2,12 +2,14 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:realm/realm.dart';
 
 import '../../models/models.dart';
 import '../../viewmodels/expense_viewmodel.dart';
 
 class AddExpenseDialog extends StatefulWidget {
-  const AddExpenseDialog({super.key});
+  final ObjectId groupId;
+  const AddExpenseDialog({super.key, required this.groupId});
 
   @override
   State<AddExpenseDialog> createState() => _AddExpenseDialogState();
@@ -64,8 +66,7 @@ class _AddExpenseDialogState extends State<AddExpenseDialog> {
                       isExpanded: true, // Ensure dropdown takes full width
                       hint: const Text(
                         '멤버를 추가하세요.',
-                      )
-                  ),
+                      )),
                 ),
               ),
               Expanded(
@@ -82,13 +83,13 @@ class _AddExpenseDialogState extends State<AddExpenseDialog> {
                           decoration: const InputDecoration(
                             hintText: '비용에 대한 설명을 적으세요.', // Placeholder text
                             border: InputBorder.none, // No border
-                            contentPadding: EdgeInsets.all(16.0), // Padding inside the text field
+                            contentPadding: EdgeInsets.all(
+                                16.0), // Padding inside the text field
                           ),
                         ),
                       ),
                       const SizedBox(
-                          height: 16
-                      ), // Spacing between input fields
+                          height: 16), // Spacing between input fields
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 16.0),
                         child: TextField(
@@ -99,7 +100,8 @@ class _AddExpenseDialogState extends State<AddExpenseDialog> {
                             prefixText: '\$ ',
                             hintText: '\$0', // Placeholder text
                             border: InputBorder.none, // No border
-                            contentPadding: EdgeInsets.all(16.0), // Padding inside the text field
+                            contentPadding: EdgeInsets.all(
+                                16.0), // Padding inside the text field
                           ),
                         ),
                       ),
@@ -124,13 +126,11 @@ class _AddExpenseDialogState extends State<AddExpenseDialog> {
                         Navigator.of(context).pop(); // Close dialog
                       },
                       style: TextButton.styleFrom(
-                        foregroundColor:
-                        const Color.fromARGB(255, 0, 0, 0),
+                        foregroundColor: const Color.fromARGB(255, 0, 0, 0),
                         minimumSize:
-                        const Size(double.infinity, 50), // Full width
+                            const Size(double.infinity, 50), // Full width
                         shape: const RoundedRectangleBorder(
-                          borderRadius:
-                          BorderRadius.zero, // No rounded corners
+                          borderRadius: BorderRadius.zero, // No rounded corners
                         ),
                       ),
                       child: const Text('닫기'),
@@ -148,36 +148,43 @@ class _AddExpenseDialogState extends State<AddExpenseDialog> {
                     child: TextButton(
                       onPressed: () {
                         // 비용 낸 멤버 가져오기
-                        Member? paidMember = viewModel.getMemberByName(selectedMember);
+                        Member? paidMember =
+                            viewModel.getMemberByName(selectedMember);
 
                         if (paidMember == null) {
-                          debugPrint('[AddExpenseDialog] 비용을 지불한 멤버를 찾을 수 없습니다.');
+                          debugPrint(
+                              '[AddExpenseDialog] 비용을 지불한 멤버를 찾을 수 없습니다.');
                         }
 
                         // 비용 값 처리
-                        double? expenseValue = double.tryParse(_expenseLabelCtrl.text.replaceAll(RegExp(r'[^0-9.]'), ''));
+                        double? expenseValue = double.tryParse(_expenseLabelCtrl
+                            .text
+                            .replaceAll(RegExp(r'[^0-9.]'), ''));
 
                         if (expenseValue == null) {
                           debugPrint('[AddExpenseDialog] 비용 값이 적절하지 않습니다.');
                         }
 
-                        bool isValid = (paidMember != null && expenseValue != null);
+                        bool isValid =
+                            (paidMember != null && expenseValue != null);
 
                         if (isValid) {
-                          String description = _expenseDescriptionCtrl.text == "" ? "님이 지불한 돈" : _expenseDescriptionCtrl.text;
-                          viewModel.addExpense(description, expenseValue, paidMember);
+                          String description =
+                              _expenseDescriptionCtrl.text == ""
+                                  ? "님이 지불한 돈"
+                                  : _expenseDescriptionCtrl.text;
+                          viewModel.addExpense(widget.groupId, description,
+                              expenseValue, paidMember);
                         }
 
                         Navigator.of(context).pop(); // Close dialog
                       },
                       style: TextButton.styleFrom(
-                        foregroundColor:
-                        const Color.fromARGB(255, 0, 0, 0),
+                        foregroundColor: const Color.fromARGB(255, 0, 0, 0),
                         minimumSize:
-                        const Size(double.infinity, 50), // Full width
+                            const Size(double.infinity, 50), // Full width
                         shape: const RoundedRectangleBorder(
-                          borderRadius:
-                          BorderRadius.zero, // No rounded corners
+                          borderRadius: BorderRadius.zero, // No rounded corners
                         ),
                       ),
                       child: const Text('저장'),

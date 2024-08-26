@@ -4,29 +4,32 @@ import '../models/models.dart';
 class DatabaseService {
   late Realm realm;
 
-  DatabaseService () {
-    final config = Configuration.local(
-        [Member.schema, Expense.schema, Group.schema]
-    );
+  DatabaseService() {
+    final config =
+        Configuration.local([Member.schema, Expense.schema, Group.schema]);
     realm = Realm(config);
   }
 
   // 멤버 추가
-  void addMember(String name) {
+  Member addMember(String name) {
     final member = Member(ObjectId(), name);
-    realm.write((){
+    realm.write(() {
       realm.add(member);
     });
+    return member;
   }
 
   // 비용 추가
-  void addExpense(String description, double amount, Member paidBy, List<Member> sharedWith) {
-    final expense = Expense(ObjectId(), description, amount, sharedWith: sharedWith);
+  Expense addExpense(String description, double amount, Member paidBy,
+      List<Member> sharedWith) {
+    final expense =
+        Expense(ObjectId(), description, amount, sharedWith: sharedWith);
     realm.write(() {
       realm.add(expense);
       // 백링크로 expense 에는 자동 업데이트
       paidBy.paidExpenses.add(expense);
     });
+    return expense;
   }
 
   // 그룹 추가
@@ -170,7 +173,9 @@ class DatabaseService {
   // 이름으로 비용 가져오기
   Expense? getExpenseByDescription(String description) {
     try {
-      return realm.all<Expense>().firstWhere((e) => e.description == description);
+      return realm
+          .all<Expense>()
+          .firstWhere((e) => e.description == description);
     } catch (e) {
       return null;
     }
