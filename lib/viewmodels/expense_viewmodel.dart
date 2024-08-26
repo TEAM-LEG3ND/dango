@@ -1,6 +1,7 @@
 import 'package:dango/views/widgets/add_expense_dialog.dart';
 import 'package:dango/views/widgets/add_member_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:realm/realm.dart';
 import '../models/models.dart';
 import '../services/database_service.dart';
 
@@ -9,6 +10,7 @@ class ExpenseViewModel extends ChangeNotifier {
   ExpenseViewModel(this._databaseService) {
     fetchExpenses();
     fetchMembers();
+    fetchGroups();
   }
 
   Member? _selectedMember;
@@ -20,6 +22,9 @@ class ExpenseViewModel extends ChangeNotifier {
   List<Member> _members = [];
   List<Member> get members => _members;
 
+  List<Group> _groups = [];
+  List<Group> get groups => _groups;
+
   Future<void> fetchExpenses() async {
     _expenses = _databaseService.getAllExpenses();
     notifyListeners();
@@ -30,13 +35,22 @@ class ExpenseViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void addMember(String name) {
-    _databaseService.addMember(name);
+  Future<void> fetchGroups() async {
+    _groups = _databaseService.getAllGroups();
+    notifyListeners();
+  }
+
+  void addMember(ObjectId groupId, String name) {
+    final newMember = _databaseService.addMember(name);
+    _databaseService.addMemberToGroup(groupId, newMember);
     fetchMembers();
   }
 
-  void addExpense(String description, double amount, Member paidMember) {
-    _databaseService.addExpense(description, amount, paidMember, [paidMember]);
+  void addExpense(
+      ObjectId groupId, String description, double amount, Member paidMember) {
+    final newExpense = _databaseService
+        .addExpense(description, amount, paidMember, [paidMember]);
+    _databaseService.addExpenseToGroup(groupId, newExpense);
     fetchExpenses();
   }
 
@@ -52,22 +66,21 @@ class ExpenseViewModel extends ChangeNotifier {
     fetchMembers();
   }
 
-  void showAddMemberPopup(BuildContext context) {
-
+  void showAddMemberPopup(BuildContext context, ObjectId groupId) {
     showDialog(
         context: context,
         barrierDismissible: false,
         builder: (BuildContext context) {
-          return const AddMemberDialog();
+          return AddMemberDialog(groupId: groupId);
         });
   }
 
-  void showAddExpensePopup(BuildContext context) {
+  void showAddExpensePopup(BuildContext context, ObjectId groupId) {
     showDialog(
         context: context,
         barrierDismissible: false,
         builder: (BuildContext context) {
-          return const AddExpenseDialog();
+          return AddExpenseDialog(groupId: groupId);
         });
   }
 
@@ -89,7 +102,7 @@ class ExpenseViewModel extends ChangeNotifier {
   }
 
   bool hasSelectedMemberInShared(Expense expense) {
-      return _databaseService.hasMemberOnExpense(expense, _selectedMember);
+    return _databaseService.hasMemberOnExpense(expense, _selectedMember);
   }
 
   void onToggleExpense(Expense expense) {
@@ -99,5 +112,24 @@ class ExpenseViewModel extends ChangeNotifier {
       _databaseService.addMemberToExpense(expense.id, _selectedMember);
     }
     fetchExpenses();
+  }
+
+  Future<void> addNewGroup(String groupName) async {
+    // Create a new group with mock data
+    final newGroup = Group(
+      ObjectId(), // Ensure ObjectId is imported correctly
+      groupName,
+      members: [], // Start with an empty list of members
+      expenses: [], // Start with an empty list of expenses
+    );
+
+    _databaseService.addGroup(
+        newGroup.name, newGroup.members, newGroup.expenses);
+    await fetchGroups(); // Refresh the list of groups
+    notifyListeners();
+  }
+
+  Group? getGroupById(ObjectId id) {
+    return _groups.firstWhere((group) => group.id == id);
   }
 }
