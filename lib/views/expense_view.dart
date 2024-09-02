@@ -12,8 +12,8 @@ class ExpenseView extends StatefulWidget {
   final ObjectId groupId;
   final String groupName;
 
-  const ExpenseView({Key? key, required this.groupId, required this.groupName})
-      : super(key: key);
+  const ExpenseView(
+      {super.key, required this.groupId, required this.groupName});
 
   @override
   State<ExpenseView> createState() => _ExpenseViewState();
@@ -37,7 +37,7 @@ class _ExpenseViewState extends State<ExpenseView> {
             appBar: AppBar(
               title: const Text("Group Detailffs"),
             ),
-            body: Center(
+            body: const Center(
               child: CircularProgressIndicator(),
             ),
           );

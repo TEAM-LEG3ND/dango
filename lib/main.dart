@@ -1,7 +1,6 @@
 import 'package:dango/pages/expense_page.dart';
+import 'package:dango/pages/group_list_page.dart';
 import 'package:dango/viewmodels/expense_viewmodel.dart';
-import 'package:dango/views/expense_view.dart';
-import 'package:dango/views/list_view.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:realm/realm.dart';
@@ -26,7 +25,7 @@ void main() {
         navigatorKey: navigationService.navigatorKey,
         initialRoute: '/',
         routes: {
-          '/': (context) => const ListViewScreen(),
+          '/': (context) => const GroupPage(),
           '/expense': (context) {
             final args = ModalRoute.of(context)!.settings.arguments
                 as Map<String, dynamic>;
