@@ -132,4 +132,14 @@ class ExpenseViewModel extends ChangeNotifier {
   Group? getGroupById(ObjectId id) {
     return _groups.firstWhere((group) => group.id == id);
   }
+
+  void updateGroupName(ObjectId groupId, String newName) async {
+    _databaseService.updateGroupName(groupId, newName);
+    await fetchGroups();
+    notifyListeners();
+  }
+
+  String getGroupNameById(ObjectId groupId) {
+    return _groups.firstWhere((group) => group.id == groupId).name;
+  }
 }

@@ -9,7 +9,7 @@ class AppBarBase extends StatelessWidget implements PreferredSizeWidget {
     required this.action,
   });
 
-  final String title;
+  final Widget title;
   final VoidCallback? onLeadingTap;
   final Widget action;
   final Widget leading;
@@ -20,7 +20,7 @@ class AppBarBase extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      title: Text(title),
+      title: title,
       centerTitle: true,
       leadingWidth: 80,
       leading: Center(
