@@ -8,7 +8,8 @@ class ExpensePage extends StatefulWidget {
   final ObjectId groupId; // Ensure this is the parameter name
   final String groupName;
 
-  const ExpensePage({super.key, required this.groupId, required this.groupName});
+  const ExpensePage(
+      {super.key, required this.groupId, required this.groupName});
 
   @override
   State<ExpensePage> createState() => _ExpensePageState();
@@ -19,9 +20,29 @@ class _ExpensePageState extends State<ExpensePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBarBase(
-        leadingText: '뒤로',
+        leading: const Row(
+          children: [
+            SizedBox(width: 8),
+            Icon(Icons.arrow_back),
+            SizedBox(width: 4),
+            Text(
+              '뒤로',
+              style: TextStyle(fontSize: 20),
+            ),
+          ],
+        ),
         title: widget.groupName,
-        actionText: '정산',
+        action: const Row(
+          children: [
+            SizedBox(width: 4),
+            Text(
+              '정산',
+              style: TextStyle(fontSize: 20),
+            ),
+            SizedBox(width: 8),
+            Icon(Icons.arrow_forward),
+          ],
+        ),
         onLeadingTap: () {
           Navigator.pop(
               context); // This will navigate back to the previous screen

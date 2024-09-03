@@ -1,3 +1,4 @@
+import 'package:dango/models/models.dart';
 import 'package:dango/views/widgets/add_expense_item.dart';
 import 'package:dango/views/widgets/add_member_item.dart';
 import 'package:dango/views/widgets/expense_item.dart';
@@ -11,7 +12,8 @@ class ExpenseView extends StatefulWidget {
   final ObjectId groupId;
   final String groupName;
 
-  const ExpenseView({super.key, required this.groupId, required this.groupName});
+  const ExpenseView(
+      {super.key, required this.groupId, required this.groupName});
 
   @override
   State<ExpenseView> createState() => _ExpenseViewState();
