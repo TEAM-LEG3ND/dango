@@ -16,6 +16,10 @@ class _SettlementViewState extends State<SettlementView> {
   Widget build(BuildContext context) {
     return Consumer<SettlementViewModel>(
       builder: (context, viewModel, child) {
+        final group = viewModel.getGroupById(widget.groupId);
+        if (group == null) {
+          return const Text('Error');
+        }
 
         return Container(
 

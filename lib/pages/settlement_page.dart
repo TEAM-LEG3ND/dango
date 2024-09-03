@@ -31,7 +31,7 @@ class _SettlementPageState extends State<SettlementPage> {
                     ),
                   ],
                 ),
-                title: '정산',
+                title: const Text('정산'),
                 action: const Row(
                   children: [
                     SizedBox(width: 4),
@@ -41,11 +41,11 @@ class _SettlementPageState extends State<SettlementPage> {
                       style: TextStyle(fontSize: 20),
                     ),
                     SizedBox(width: 8),
-                    Icon(Icons.arrow_forward),
+                    Icon(Icons.home),
                   ],
                 ),
                 onLeadingTap: () {
-                  viewModel.goBack();
+                  viewModel.goHome();
                 }
             ),
             body: SettlementView(

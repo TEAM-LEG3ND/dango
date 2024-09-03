@@ -1,5 +1,4 @@
 import 'package:dango/pages/expense_page.dart';
-import 'package:dango/pages/group_list_page.dart';
 import 'package:dango/pages/settlement_page.dart';
 import 'package:dango/viewmodels/expense_viewmodel.dart';
 import 'package:dango/viewmodels/settlement_viewmodel.dart';
@@ -11,7 +10,8 @@ import './services/navigation_service.dart';
 
 void main() {
   final navigationService = NavigationService();
-
+  // todo remove db-service
+  final databaseService = DatabaseService();
   runApp(
     MultiProvider(
       providers: [
@@ -33,7 +33,8 @@ void main() {
         navigatorKey: navigationService.navigatorKey,
         initialRoute: '/',
         routes: {
-          '/': (context) => const GroupPage(),
+          // todo remove after settlement test
+          '/': (context) => SettlementPage(groupId: databaseService.getAllGroups().last.id), // const GroupPage(),
           '/expense': (context) {
             final args = ModalRoute.of(context)!.settings.arguments
                 as Map<String, dynamic>;
