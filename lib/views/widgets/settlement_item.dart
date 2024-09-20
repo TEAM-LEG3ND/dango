@@ -26,9 +26,9 @@ class SettlementItem extends StatelessWidget {
                     alignment: Alignment.centerLeft,
                     height: 80,
                     child: Text(
-                      '$from -> $to',
+                      '$from  ->  $to',
                       style: const TextStyle(
-                        fontSize: 18,
+                        fontSize: 20,
                       )
                     ),
                   ),
@@ -38,7 +38,7 @@ class SettlementItem extends StatelessWidget {
                 child: Text(
                     '\$ $cost',
                     style: const TextStyle(
-                      fontSize: 16,
+                      fontSize: 18,
                     )
                 ),
               )

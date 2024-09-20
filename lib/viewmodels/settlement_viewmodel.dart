@@ -12,6 +12,11 @@ class SettlementViewModel extends ChangeNotifier {
     fetchGroups();
   }
 
+  // from 이 to 에게 보내야 하는 돈
+  // [$from][$to] = cost
+  Map<String, Map<String, double>> _receipt = {};
+  Map<String, Map<String, double>> get receipt => _receipt;
+
   List<Group> _groups = [];
   List<Group> get groups => _groups;
 
@@ -38,6 +43,40 @@ class SettlementViewModel extends ChangeNotifier {
 
   Group? getGroupById(ObjectId id) {
     return _groups.firstWhere((group) => group.id == id);
+  }
+
+  Future<void> fetchReceipt(Group group) async {
+    // 초기화
+    _receipt = {};
+    double remainder = 0;
+    final List<Expense> expenses = group.expenses;
+
+    for (var expense in expenses) {
+      // 비용을 받을 사람
+      String to = expense.paidBy.first.name;
+      double cost = expense.amount;
+
+      double costPerMember = (cost / expense.sharedWith.length * 100).floor() / 100;
+      // 엔빵하고 나머지 비용 적립
+      // todo 처리 고민 지금은 낸 사람이 냄
+      remainder += (cost - double.parse((costPerMember * expense.sharedWith.length).toStringAsFixed(2)));
+
+      for (var member in expense.sharedWith) {
+        String from = member.name;
+        if (from != to) {
+          addItemToReceipt(from, to, costPerMember);
+        }
+      }
+    }
+  }
+
+  void addItemToReceipt(String from, String to, double cost) {
+    if (!_receipt.containsKey(from)) {
+      // 초기화
+      _receipt[from] = {};
+    }
+
+    _receipt[from]![to] = (_receipt[from]![to] ?? 0) + cost;
   }
 
 

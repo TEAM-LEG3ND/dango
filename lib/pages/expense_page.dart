@@ -83,20 +83,24 @@ class _ExpensePageState extends State<ExpensePage> {
                   onTap: _toggleEditing,
                   child: Text(viewModel.getGroupNameById(widget.groupId)),
                 ),
-          action: const Row(
-            children: [
-              SizedBox(width: 4),
-              Text(
-                '정산',
-                style: TextStyle(fontSize: 20),
-              ),
-              SizedBox(width: 8),
-              Icon(Icons.arrow_forward),
-            ],
+          action: GestureDetector(
+            onTap: () {
+              viewModel.goSettlementPage(widget.groupId);
+            },
+            child: const Row(
+              children: [
+                SizedBox(width: 4),
+                Text(
+                  '정산',
+                  style: TextStyle(fontSize: 20),
+                ),
+                SizedBox(width: 8),
+                Icon(Icons.arrow_forward),
+              ],
+            ),
           ),
           onLeadingTap: () {
-            Navigator.pop(
-                context); // This will navigate back to the previous screen
+            viewModel.goBack();
           },
         ),
         body: ExpenseView(groupId: widget.groupId, groupName: widget.groupName),

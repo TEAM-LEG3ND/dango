@@ -32,20 +32,24 @@ class _SettlementPageState extends State<SettlementPage> {
                   ],
                 ),
                 title: const Text('정산'),
-                action: const Row(
-                  children: [
-                    SizedBox(width: 4),
-                    Text(
-                      // todo
-                      '홈으로',
-                      style: TextStyle(fontSize: 20),
-                    ),
-                    SizedBox(width: 8),
-                    Icon(Icons.home),
-                  ],
+                action: GestureDetector(
+                  onTap: () {
+                    viewModel.goHome();
+                  },
+                  child: const Row(
+                    children: [
+                      SizedBox(width: 4),
+                      Text(
+                        '홈으로',
+                        style: TextStyle(fontSize: 20),
+                      ),
+                      SizedBox(width: 8),
+                      Icon(Icons.home),
+                    ],
+                  ),
                 ),
                 onLeadingTap: () {
-                  viewModel.goHome();
+                  viewModel.goBack();
                 }
             ),
             body: SettlementView(

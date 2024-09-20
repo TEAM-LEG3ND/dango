@@ -4,10 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:realm/realm.dart';
 import '../models/models.dart';
 import '../services/database_service.dart';
+import '../services/navigation_service.dart';
 
 class ExpenseViewModel extends ChangeNotifier {
   final DatabaseService _databaseService;
-  ExpenseViewModel(this._databaseService) {
+  final NavigationService _navigationService;
+
+  ExpenseViewModel(this._databaseService, this._navigationService) {
     fetchExpenses();
     fetchMembers();
     fetchGroups();
@@ -38,6 +41,16 @@ class ExpenseViewModel extends ChangeNotifier {
   Future<void> fetchGroups() async {
     _groups = _databaseService.getAllGroups();
     notifyListeners();
+  }
+
+  void goBack() {
+    _navigationService.goBack();
+  }
+
+  void goSettlementPage(groupId) {
+    _navigationService.navigateTo('/settlement', arguments: {
+      'groupId' : groupId,
+    });
   }
 
   void addMember(ObjectId groupId, String name) {
