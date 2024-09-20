@@ -1,6 +1,8 @@
 import 'package:dango/pages/expense_page.dart';
 import 'package:dango/pages/group_list_page.dart';
+import 'package:dango/pages/settlement_page.dart';
 import 'package:dango/viewmodels/expense_viewmodel.dart';
+import 'package:dango/viewmodels/settlement_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:realm/realm.dart';
@@ -9,7 +11,6 @@ import './services/navigation_service.dart';
 
 void main() {
   final navigationService = NavigationService();
-
   runApp(
     MultiProvider(
       providers: [
@@ -18,8 +19,15 @@ void main() {
         ChangeNotifierProvider<ExpenseViewModel>(
           create: (context) => ExpenseViewModel(
             Provider.of<DatabaseService>(context, listen: false),
+            Provider.of<NavigationService>(context, listen: false),
           ),
         ),
+        ChangeNotifierProvider<SettlementViewModel>(
+          create: (context) => SettlementViewModel(
+            Provider.of<DatabaseService>(context, listen: false),
+            Provider.of<NavigationService>(context, listen: false),
+          ),
+        )
       ],
       child: MaterialApp(
         navigatorKey: navigationService.navigatorKey,
@@ -35,6 +43,15 @@ void main() {
             return ExpensePage(
               groupId: groupId,
               groupName: groupName,
+            );
+          },
+          '/settlement': (context) {
+            final args = ModalRoute.of(context)!.settings.arguments
+            as Map<String, dynamic>;
+            final groupId = args['groupId'] ??
+                'defaultGroupId' as ObjectId;
+            return SettlementPage(
+                groupId: groupId,
             );
           },
         },

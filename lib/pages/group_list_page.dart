@@ -1,6 +1,7 @@
 import 'package:dango/pages/expense_page.dart';
 import 'package:dango/viewmodels/expense_viewmodel.dart';
 import 'package:dango/views/list_view.dart';
+import 'package:dango/views/widgets/add_member_dialog.dart';
 import 'package:dango/views/widgets/app_bar_base.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -20,7 +21,7 @@ class _GroupPageState extends State<GroupPage> {
     return Scaffold(
       appBar: AppBarBase(
         leading: const Icon(Icons.edit),
-        title: 'Dango',
+        title: Text('dango'),
         action: IconButton(
           icon: const Icon(Icons.add),
           onPressed: () async {
@@ -35,17 +36,15 @@ class _GroupPageState extends State<GroupPage> {
                   ),
                 ),
               );
-            } else {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                    content: Text('No groups available to navigate to.')),
+              await showDialog(
+                context: context,
+                builder: (context) => AddMemberDialog(groupId: newGroup.id),
               );
             }
           },
         ),
         onLeadingTap: () {
-          Navigator.pop(
-              context); // This will navigate back to the previous screen
+          Navigator.pop(context);
         },
       ),
       body: const GroupListView(),
