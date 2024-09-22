@@ -20,7 +20,8 @@ class ExpenseItem extends StatefulWidget {
   State<ExpenseItem> createState() => _ExpenseItemState();
 }
 
-class _ExpenseItemState extends State<ExpenseItem> with SingleTickerProviderStateMixin{
+class _ExpenseItemState extends State<ExpenseItem>
+    with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<Offset> _offsetAnimation;
   bool _isDeleteScheduled = false;
@@ -84,7 +85,7 @@ class _ExpenseItemState extends State<ExpenseItem> with SingleTickerProviderStat
     final viewModel = Provider.of<ExpenseViewModel>(context);
 
     return Padding(
-      padding: const EdgeInsets.all(1.5),
+      padding: const EdgeInsets.all(0),
       child: GestureDetector(
         onHorizontalDragUpdate: (details) {
           if (details.primaryDelta! < 0) {
@@ -105,21 +106,29 @@ class _ExpenseItemState extends State<ExpenseItem> with SingleTickerProviderStat
             SlideTransition(
               position: _offsetAnimation,
               child: Container(
-                color: viewModel.hasSelectedMemberInShared(widget.expense)
-                    ? const Color(0xffC9958C)
-                    : const Color(0xffFFFFF1),
+                decoration: BoxDecoration(
+                  color: viewModel.hasSelectedMemberInShared(widget.expense)
+                      ? const Color(0xffC9958C)
+                      : const Color(0xffFFFFF1),
+                  border: Border.all(
+                    color: const Color(0xffDEF2CF), // Border color
+                    width: 0.3, // Adjust this value to control thickness
+                  ), // Border color
+                ),
                 height: 80,
                 child: Row(
                   children: [
                     Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 10.0),
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 5.0, horizontal: 10.0),
                       child: SizedBox(
                         width: 60,
                         height: 50,
                         child: Container(
                           padding: const EdgeInsets.symmetric(horizontal: 8.0),
                           decoration: BoxDecoration(
-                            color: widget.expense.paidBy.first == viewModel.selectedMember
+                            color: widget.expense.paidBy.first ==
+                                    viewModel.selectedMember
                                 ? const Color(0xffC9958C)
                                 : const Color(0xff95B47E),
                             borderRadius: const BorderRadius.all(
@@ -127,21 +136,21 @@ class _ExpenseItemState extends State<ExpenseItem> with SingleTickerProviderStat
                             ),
                             border: Border.all(
                               color: Colors.white,
-                              width: viewModel.hasSelectedMemberInShared(widget.expense)
+                              width: viewModel
+                                      .hasSelectedMemberInShared(widget.expense)
                                   ? 2.0
                                   : 0.0,
                             ),
                           ),
                           child: Center(
-                            child: Text(
-                              widget.expense.paidBy.first.name,
-                              style: const TextStyle(
-                                fontSize: 16,
-                              ),
-                              overflow: TextOverflow.clip,
-                              maxLines: 1,
-                            )
-                          ),
+                              child: Text(
+                            widget.expense.paidBy.first.name,
+                            style: const TextStyle(
+                              fontSize: 16,
+                            ),
+                            overflow: TextOverflow.clip,
+                            maxLines: 1,
+                          )),
                         ),
                       ),
                     ),
@@ -165,7 +174,9 @@ class _ExpenseItemState extends State<ExpenseItem> with SingleTickerProviderStat
                             const Spacer(),
                             // 공유 멤버 리스트
                             Text(
-                              widget.expense.sharedWith.map((member) => member.name.trim()).join(', '),
+                              widget.expense.sharedWith
+                                  .map((member) => member.name.trim())
+                                  .join(', '),
                               style: const TextStyle(
                                 fontSize: 14,
                               ),
@@ -199,7 +210,8 @@ class _ExpenseItemState extends State<ExpenseItem> with SingleTickerProviderStat
               animation: _controller,
               builder: (context, child) {
                 return Positioned(
-                  right: (_controller.value * 65) - 50, // 아이콘이 리스트와 함께 이동하도록 동기화
+                  right:
+                      (_controller.value * 65) - 50, // 아이콘이 리스트와 함께 이동하도록 동기화
                   top: 0,
                   bottom: 0,
                   child: IconButton(
