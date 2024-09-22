@@ -17,7 +17,7 @@ class MemberItem extends StatelessWidget {
     final viewModel = Provider.of<ExpenseViewModel>(context);
 
     return Padding(
-      padding: const EdgeInsets.all(15.0),
+      padding: const EdgeInsets.all(8.0),
       child: Stack(
         clipBehavior: Clip.none,
         children: [
@@ -30,10 +30,13 @@ class MemberItem extends StatelessWidget {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20),
                 ),
-                backgroundColor: viewModel.selectedMember == member ? const Color(0xffC9958C) : const Color(0xff95B47E),
+                backgroundColor: viewModel.selectedMember == member
+                    ? const Color(0xffC9958C)
+                    : const Color(0xff95B47E),
                 elevation: 0,
                 shadowColor: Colors.transparent,
-                padding: const EdgeInsets.symmetric(horizontal: 10), // 패딩을 넣어 텍스트 공간 확보
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 10), // 패딩을 넣어 텍스트 공간 확보
               ),
               child: Text(
                 member.name.toString(),
@@ -47,23 +50,21 @@ class MemberItem extends StatelessWidget {
           ),
           if (viewModel.selectedMember == member)
             Positioned(
-              right: -15,
-              top: -15,
-              child: GestureDetector(
-                onTap: () => viewModel.removeMember(member),
-                child: ClipOval(
-                  child: Container(
-                    color: Colors.red,
-                    padding: const EdgeInsets.all(8.0),
-                    child: const Icon(
-                      Icons.delete,
-                      color: Colors.white,
-                      size: 20.0,
-                    ),
-                  ),
-                )
-              )
-            ),
+                right: -15,
+                top: -15,
+                child: GestureDetector(
+                    onTap: () => viewModel.removeMember(member),
+                    child: ClipOval(
+                      child: Container(
+                        color: Colors.red,
+                        padding: const EdgeInsets.all(8.0),
+                        child: const Icon(
+                          Icons.delete,
+                          color: Colors.white,
+                          size: 20.0,
+                        ),
+                      ),
+                    ))),
         ],
       ),
     );
