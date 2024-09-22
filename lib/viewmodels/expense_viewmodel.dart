@@ -49,7 +49,7 @@ class ExpenseViewModel extends ChangeNotifier {
 
   void goSettlementPage(groupId) {
     _navigationService.navigateTo('/settlement', arguments: {
-      'groupId' : groupId,
+      'groupId': groupId,
     });
   }
 
@@ -77,6 +77,11 @@ class ExpenseViewModel extends ChangeNotifier {
     _selectedMember = null;
     fetchExpenses();
     fetchMembers();
+  }
+
+  void removeGroup(Group group) {
+    _databaseService.removeGroup(group.id);
+    fetchGroups();
   }
 
   void showAddMemberPopup(BuildContext context, ObjectId groupId) {
@@ -154,5 +159,14 @@ class ExpenseViewModel extends ChangeNotifier {
 
   String getGroupNameById(ObjectId groupId) {
     return _groups.firstWhere((group) => group.id == groupId).name;
+  }
+
+  List<Member> getMembersByGroupId(ObjectId groupId) {
+    final group = _groups.firstWhere((g) => g.id == groupId);
+    print("amy");
+    print(group.members);
+    print(group.members.toList());
+    print("end");
+    return group.members;
   }
 }

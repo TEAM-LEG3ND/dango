@@ -27,113 +27,111 @@ class _AddMemberDialogState extends State<AddMemberDialog> {
     final viewModel = Provider.of<ExpenseViewModel>(context);
 
     return Dialog(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(0),
-        ),
-        child: SizedBox(
-          width: 400,
-          height: 300,
-          child: Column(
-            children: [
-              Expanded(
-                child: Center(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      const Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 8.0),
-                        child: Text(
-                          '멤버 추가',
-                          style: TextStyle(
-                            fontSize: 22,
-                          ),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(0),
+      ),
+      child: SizedBox(
+        width: 400,
+        height: 250,
+        child: Column(
+          children: [
+            Expanded(
+              child: Center(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 8.0),
+                      child: Text(
+                        '멤버 추가',
+                        style: TextStyle(
+                          fontSize: 20,
                         ),
                       ),
-                      const SizedBox(
-                          height: 32), // Spacing between input fields
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                        child: TextField(
-                          controller: _memberNameCtrl,
-                          textAlign: TextAlign.center,
-                          textAlignVertical: TextAlignVertical.center,
-                          decoration: const InputDecoration(
-                            hintText: '새로운 멤버', // Placeholder text
-                            border: InputBorder.none, // No border
-                            contentPadding: EdgeInsets.all(
-                                16.0), // Padding inside the text field
-                          ),
+                    ),
+                    const SizedBox(height: 32),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      child: TextField(
+                        style: const TextStyle(fontSize: 32),
+                        controller: _memberNameCtrl,
+                        textAlign: TextAlign.center,
+                        textAlignVertical: TextAlignVertical.center,
+                        decoration: const InputDecoration(
+                          hintText: '이름', // Placeholder text
+                          border: InputBorder.none,
+                          contentPadding: EdgeInsets.all(0.0),
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
-              // Divider above the buttons
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 8.0),
-                child: Divider(
-                  height: 1.5,
-                  thickness: 1,
-                  color: Color.fromARGB(255, 0, 0, 0), // Divider color
-                ),
+            ),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 8.0),
+              child: Divider(
+                height: 1.5,
+                thickness: 1,
+                color: Color.fromARGB(255, 0, 0, 0),
               ),
-              Row(
-                children: [
-                  Expanded(
-                    child: TextButton(
-                      onPressed: () {
-                        Navigator.of(context).pop(); // Close dialog
-                      },
-                      style: TextButton.styleFrom(
-                        foregroundColor: const Color.fromARGB(255, 0, 0, 0),
-                        minimumSize:
-                            const Size(double.infinity, 50), // Full width
-                        shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.zero, // No rounded corners
-                        ),
+            ),
+            Row(
+              children: [
+                Expanded(
+                  child: TextButton(
+                    onPressed: () {
+                      // Pop the dialog and cancel the group creation
+                      Navigator.of(context)
+                          .pop(false); // Pass false to indicate cancellation
+                    },
+                    style: TextButton.styleFrom(
+                      foregroundColor: const Color.fromARGB(255, 0, 0, 0),
+                      minimumSize: const Size(double.infinity, 50),
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.zero,
                       ),
-                      child: const Text('닫기'),
                     ),
+                    child: const Text('닫기'),
                   ),
-                  Container(
-                    height: 50, // Ensure the divider takes the full height
-                    padding: const EdgeInsets.only(bottom: 8.0),
-                    child: const VerticalDivider(
-                      width: 1, // Divider thickness
-                      color: Colors.black, // Divider color
-                    ),
+                ),
+                Container(
+                  height: 50,
+                  padding: const EdgeInsets.only(bottom: 8.0),
+                  child: const VerticalDivider(
+                    width: 1,
+                    color: Colors.black,
                   ),
-                  Expanded(
-                    child: TextButton(
-                      onPressed: () {
-                        String memberName = _memberNameCtrl.text == ""
-                            ? "새로운 멤버"
-                            : _memberNameCtrl.text;
+                ),
+                Expanded(
+                  child: TextButton(
+                    onPressed: () {
+                      String memberName = _memberNameCtrl.text.isEmpty
+                          ? "New Member"
+                          : _memberNameCtrl.text;
 
-                        Member? alreadyMember =
-                            viewModel.getMemberByName(memberName);
-                        if (alreadyMember == null) {
-                          // DB에 이름이 겹치지 않게 함.
-                          viewModel.addMember(widget.groupId, memberName);
-                        }
-                        Navigator.of(context).pop(); // Close dialog
-                      },
-                      style: TextButton.styleFrom(
-                        foregroundColor: const Color.fromARGB(255, 0, 0, 0),
-                        minimumSize:
-                            const Size(double.infinity, 50), // Full width
-                        shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.zero, // No rounded corners
-                        ),
+                      Member? alreadyMember =
+                          viewModel.getMemberByName(memberName);
+                      if (alreadyMember == null) {
+                        viewModel.addMember(widget.groupId, memberName);
+                        Navigator.of(context).pop(true); // Indicate success
+                      }
+                    },
+                    style: TextButton.styleFrom(
+                      foregroundColor: const Color.fromARGB(255, 0, 0, 0),
+                      minimumSize: const Size(double.infinity, 50),
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.zero,
                       ),
-                      child: const Text('저장'),
                     ),
+                    child: const Text('저장'),
                   ),
-                ],
-              ),
-            ],
-          ),
-        ));
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
