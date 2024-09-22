@@ -80,6 +80,20 @@ class ExpenseViewModel extends ChangeNotifier {
   }
 
   void removeGroup(Group group) {
+    // Create a copy of the expenses to avoid modifying the list while iterating
+    final expensesToRemove = List.from(group.expenses);
+    // Remove all expenses associated with the group
+    for (var expense in expensesToRemove) {
+      _databaseService.removeExpense(expense.id);
+    }
+
+    // Create a copy of the members to avoid modifying the list while iterating
+    final membersToRemove = List.from(group.members);
+    // Remove all members associated with the group
+    for (var member in membersToRemove) {
+      _databaseService.removeMember(member.id);
+    }
+
     _databaseService.removeGroup(group.id);
     fetchGroups();
   }
