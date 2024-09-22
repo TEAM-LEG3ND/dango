@@ -1,4 +1,3 @@
-import 'package:dango/models/models.dart';
 import 'package:dango/views/widgets/add_expense_item.dart';
 import 'package:dango/views/widgets/add_member_item.dart';
 import 'package:dango/views/widgets/expense_item.dart';
@@ -35,7 +34,7 @@ class _ExpenseViewState extends State<ExpenseView> {
         if (group == null) {
           return Scaffold(
             appBar: AppBar(
-              title: const Text("Group Detailffs"),
+              title: const Text("Group Details"),
             ),
             body: const Center(
               child: CircularProgressIndicator(),
@@ -45,9 +44,6 @@ class _ExpenseViewState extends State<ExpenseView> {
 
         return Column(
           children: <Widget>[
-            const SizedBox(
-              height: 10,
-            ),
             Expanded(
               child: SingleChildScrollView(
                 child: Column(

@@ -190,6 +190,20 @@ class DatabaseService {
     }
   }
 
+  Group? getGroupById(ObjectId id) {
+    final group = realm.find<Group>(id);
+    return group; // This will return null if the group has been deleted
+  }
+
+  void updatePaidBy(Expense expense, Member newPaidBy, Member oldPaidBy) {
+    realm.write(() {
+      // Remove the expense from the old paidBy member's list
+      oldPaidBy.paidExpenses.remove(expense);
+      // Add the expense to the new paidBy member's list
+      newPaidBy.paidExpenses.add(expense);
+    });
+  }
+
   void close() {
     realm.close();
   }

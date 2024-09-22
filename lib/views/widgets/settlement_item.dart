@@ -15,36 +15,37 @@ class SettlementItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: const EdgeInsets.all(1.5),
+        padding: const EdgeInsets.all(0),
         child: Container(
-          color: const Color(0xffFFFFF1),
+          decoration: BoxDecoration(
+            color: const Color(0xffFFFFF1), // Background color of the row
+            border: Border.all(
+              color: const Color(0xffDEF2CF), // Border color
+              width: 0.5, // Border thickness
+            ),
+          ),
           child: Row(
             children: [
               Expanded(
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 18.0),
-                    alignment: Alignment.centerLeft,
-                    height: 80,
-                    child: Text(
-                      '$from  ->  $to',
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 18.0),
+                  alignment: Alignment.centerLeft,
+                  height: 70,
+                  child: Text('$from  ->  $to',
                       style: const TextStyle(
-                        fontSize: 20,
-                      )
-                    ),
-                  ),
+                        fontSize: 18,
+                      )),
+                ),
               ),
               SizedBox(
                 width: 100,
-                child: Text(
-                    '\$ $cost',
+                child: Text('\$ $cost',
                     style: const TextStyle(
                       fontSize: 18,
-                    )
-                ),
+                    )),
               )
             ],
           ),
-        )
-    );
+        ));
   }
 }
