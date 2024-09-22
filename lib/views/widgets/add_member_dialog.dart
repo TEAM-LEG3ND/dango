@@ -15,11 +15,19 @@ class AddMemberDialog extends StatefulWidget {
 
 class _AddMemberDialogState extends State<AddMemberDialog> {
   final TextEditingController _memberNameCtrl = TextEditingController();
+  String? _errorMessage;
 
   @override
   void dispose() {
     _memberNameCtrl.dispose();
     super.dispose();
+  }
+
+  void _onMemberNameChanged() {
+    // Clear the error message when the user starts typing
+    setState(() {
+      _errorMessage = null;
+    });
   }
 
   @override
@@ -58,12 +66,21 @@ class _AddMemberDialogState extends State<AddMemberDialog> {
                         textAlign: TextAlign.center,
                         textAlignVertical: TextAlignVertical.center,
                         decoration: const InputDecoration(
-                          hintText: '이름', // Placeholder text
+                          hintText: '이름',
                           border: InputBorder.none,
                           contentPadding: EdgeInsets.all(0.0),
                         ),
+                        onChanged: (text) => _onMemberNameChanged(),
                       ),
                     ),
+                    if (_errorMessage != null)
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          _errorMessage!,
+                          style: const TextStyle(color: Colors.red),
+                        ),
+                      ),
                   ],
                 ),
               ),
@@ -81,9 +98,7 @@ class _AddMemberDialogState extends State<AddMemberDialog> {
                 Expanded(
                   child: TextButton(
                     onPressed: () {
-                      // Pop the dialog and cancel the group creation
-                      Navigator.of(context)
-                          .pop(false); // Pass false to indicate cancellation
+                      Navigator.of(context).pop(false);
                     },
                     style: TextButton.styleFrom(
                       foregroundColor: const Color.fromARGB(255, 0, 0, 0),
@@ -112,9 +127,13 @@ class _AddMemberDialogState extends State<AddMemberDialog> {
 
                       Member? alreadyMember = viewModel.getMemberByNameInGroup(
                           widget.groupId, memberName);
-                      if (alreadyMember == null) {
+                      if (alreadyMember != null) {
+                        setState(() {
+                          _errorMessage = "이름이 이미 존재합니다.";
+                        });
+                      } else {
                         viewModel.addMember(widget.groupId, memberName);
-                        Navigator.of(context).pop(true); // Indicate success
+                        Navigator.of(context).pop(true);
                       }
                     },
                     style: TextButton.styleFrom(
