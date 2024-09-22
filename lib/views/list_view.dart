@@ -26,22 +26,14 @@ class GroupListView extends StatelessWidget {
         final group = viewModel.groups[index];
         final isSelected = selectedGroups.contains(group);
 
-        return ListTile(
-          title: Text(group.name),
-          trailing: isEditing
-              ? Checkbox(
-                  value: isSelected,
-                  onChanged: (bool? value) {
-                    onSelectGroup(group, value ?? false);
-                  },
-                )
-              : null,
+        return GestureDetector(
           onTap: isEditing
               ? () {
                   // Select or deselect the group
                   onSelectGroup(group, !isSelected);
                 }
               : () {
+                  // Navigate to the ExpensePage
                   Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -52,6 +44,65 @@ class GroupListView extends StatelessWidget {
                     ),
                   );
                 },
+          child: Container(
+            height: 60, // Fixed height for consistent row height
+            decoration: BoxDecoration(
+              color: isEditing
+                  ? null
+                  : const Color(0xffFFFFF1), // Lighter green when not editing
+              border: const Border(
+                top: BorderSide(
+                  color: Color(0xffDEF2CF),
+                  width: 0.5,
+                ),
+                bottom: BorderSide(
+                  color: Color(0xffDEF2CF),
+                  width: 0.5,
+                ),
+              ),
+            ),
+            child: isEditing
+                ? Row(
+                    children: [
+                      // Left Block (70% lighter green)
+                      Expanded(
+                        flex: 85,
+                        child: Container(
+                          color: const Color(0xffFFFFF1),
+                          alignment: Alignment.centerLeft,
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          child: Text(
+                            group.name,
+                            style: const TextStyle(fontSize: 16),
+                          ),
+                        ),
+                      ),
+                      // Right Block (30% darker green with checkbox)
+                      Expanded(
+                        flex: 15,
+                        child: Container(
+                          color: const Color(0xffDEF2CF),
+                          alignment: Alignment.center, // Center the checkbox
+                          child: Checkbox(
+                            value: isSelected,
+                            onChanged: (bool? value) {
+                              onSelectGroup(group, value ?? false);
+                            },
+                          ),
+                        ),
+                      ),
+                    ],
+                  )
+                : Container(
+                    alignment: Alignment.centerLeft, // Align text to the left
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Text(
+                      group.name,
+                      style: const TextStyle(fontSize: 16),
+                      textAlign: TextAlign.left,
+                    ),
+                  ),
+          ),
         );
       },
     );

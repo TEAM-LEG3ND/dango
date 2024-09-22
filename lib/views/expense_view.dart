@@ -35,7 +35,7 @@ class _ExpenseViewState extends State<ExpenseView> {
         if (group == null) {
           return Scaffold(
             appBar: AppBar(
-              title: const Text("Group Detailffs"),
+              title: const Text("Group Details"),
             ),
             body: const Center(
               child: CircularProgressIndicator(),
@@ -45,9 +45,6 @@ class _ExpenseViewState extends State<ExpenseView> {
 
         return Column(
           children: <Widget>[
-            const SizedBox(
-              height: 10,
-            ),
             Expanded(
               child: SingleChildScrollView(
                 child: Column(

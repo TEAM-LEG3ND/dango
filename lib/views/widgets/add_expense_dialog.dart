@@ -32,7 +32,6 @@ class _AddExpenseDialogState extends State<AddExpenseDialog> {
     final viewModel = Provider.of<ExpenseViewModel>(context);
 
     List<Member> groupMembers = viewModel.getMembersByGroupId(widget.groupId);
-
     if (selectedMember == null && groupMembers.isNotEmpty) {
       selectedMember = groupMembers.first.name;
     }

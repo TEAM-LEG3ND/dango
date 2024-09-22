@@ -52,6 +52,7 @@ class _ExpensePageState extends State<ExpensePage> {
   @override
   Widget build(BuildContext context) {
     final viewModel = Provider.of<ExpenseViewModel>(context, listen: false);
+
     return GestureDetector(
       onTap: () {
         if (_isEditing) {
@@ -103,7 +104,20 @@ class _ExpensePageState extends State<ExpensePage> {
             viewModel.goBack();
           },
         ),
-        body: ExpenseView(groupId: widget.groupId, groupName: widget.groupName),
+        body: Column(
+          children: [
+            Container(
+              height: 1, // Set the height of the line
+              color: Colors.black, // Line color
+              margin: const EdgeInsets.symmetric(
+                  horizontal: 50), // Centered margins
+            ),
+            Expanded(
+              child: ExpenseView(
+                  groupId: widget.groupId, groupName: widget.groupName),
+            ),
+          ],
+        ),
       ),
     );
   }

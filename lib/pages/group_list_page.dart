@@ -39,61 +39,77 @@ class _GroupPageState extends State<GroupPage> {
         title: const Text('List'),
         action: _isEditing
             ? IconButton(
-                icon: const Icon(Icons.delete, color: Colors.red),
+                icon: const Icon(Icons.delete, color: Colors.black),
                 onPressed: () {
                   _showDeleteConfirmationDialog(context);
                 },
               )
-            : IconButton(
-                icon: const Icon(Icons.add),
-                onPressed: () async {
-                  await viewModel.addNewGroup('New Group');
-                  final newGroup = viewModel.groups.last;
+            : Container(
+                decoration: const BoxDecoration(
+                  color: Color(0xff95B47E), // Change this to your desired color
+                  shape: BoxShape.rectangle, // Rounded corners
+                ),
+                child: IconButton(
+                  icon: const Icon(Icons.add,
+                      color: Color(0xff131313)), // Icon color
+                  onPressed: () async {
+                    await viewModel.addNewGroup('New Group');
+                    final newGroup = viewModel.groups.last;
 
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => ExpensePage(
-                        groupId: newGroup.id,
-                        groupName: newGroup.name,
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ExpensePage(
+                          groupId: newGroup.id,
+                          groupName: newGroup.name,
+                        ),
                       ),
-                    ),
-                  );
+                    );
 
-                  // Show the AddMemberDialog and wait for the result
-                  bool? memberCreated = await showDialog(
-                    context: context,
-                    builder: (context) => AddMemberDialog(groupId: newGroup.id),
-                  );
+                    // Show the AddMemberDialog and wait for the result
+                    bool? memberCreated = await showDialog(
+                      context: context,
+                      builder: (context) =>
+                          AddMemberDialog(groupId: newGroup.id),
+                    );
 
-                  // If no member was created, cancel creating the new group
-                  if (memberCreated == null || !memberCreated) {
-                    // Optionally, you can remove the last group added if necessary
-
-                    Navigator.pop(context);
-                    viewModel.removeGroup(
-                        newGroup); // Adjust this based on your logic
-
-                    return; // Exit the method
-                  }
-                },
+                    // If no member was created, cancel creating the new group
+                    if (memberCreated == null || !memberCreated) {
+                      Navigator.pop(context);
+                      viewModel.removeGroup(newGroup);
+                      return; // Exit the method
+                    }
+                  },
+                ),
               ),
         onLeadingTap: () {
           Navigator.pop(context);
         },
       ),
-      body: GroupListView(
-        isEditing: _isEditing,
-        selectedGroups: _selectedGroups,
-        onSelectGroup: (Group group, bool isSelected) {
-          setState(() {
-            if (isSelected) {
-              _selectedGroups.add(group);
-            } else {
-              _selectedGroups.remove(group);
-            }
-          });
-        },
+      body: Column(
+        children: [
+          Container(
+            height: 1, // Height of the line
+            color: Colors.black, // Line color
+            margin:
+                const EdgeInsets.symmetric(horizontal: 50), // Centered margins
+          ),
+          Expanded(
+            child: GroupListView(
+              isEditing: _isEditing,
+              selectedGroups: _selectedGroups,
+              onSelectGroup: (Group group, bool isSelected) {
+                setState(() {
+                  if (isSelected) {
+                    _selectedGroups.add(group);
+                  } else {
+                    _selectedGroups.remove(group);
+                  }
+                });
+              },
+            ),
+          ),
+        ],
       ),
     );
   }
