@@ -42,7 +42,12 @@ class SettlementViewModel extends ChangeNotifier {
   }
 
   Group? getGroupById(ObjectId id) {
-    return _groups.firstWhere((group) => group.id == id);
+    try {
+      fetchGroups(); // Ensure groups are fetched !!!
+      return _groups.firstWhere((group) => group.id == id);
+    } catch (e) {
+      return null;
+    }
   }
 
   Future<void> fetchReceipt(Group group) async {

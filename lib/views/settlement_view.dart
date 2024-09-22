@@ -12,9 +12,13 @@ class SettlementView extends StatefulWidget {
 
   Future<List<SettlementItem>> getSettlementItems(
       SettlementViewModel viewModel) async {
+    print("group");
     Group? group = viewModel.getGroupById(groupId);
     if (group != null) {
+      print("follow me4");
       await viewModel.fetchReceipt(group);
+    } else {
+      print("group is null");
     }
     List<SettlementItem> items = [];
 

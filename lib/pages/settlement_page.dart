@@ -15,6 +15,11 @@ class SettlementPage extends StatefulWidget {
 
 class _SettlementPageState extends State<SettlementPage> {
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Consumer<SettlementViewModel>(builder: (context, viewModel, child) {
       return Scaffold(

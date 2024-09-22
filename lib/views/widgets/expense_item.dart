@@ -80,6 +80,27 @@ class _ExpenseItemState extends State<ExpenseItem>
     }
   }
 
+  void _changePaidByMember() async {
+    final viewModel = Provider.of<ExpenseViewModel>(context, listen: false);
+
+    // Get the currently selected member
+    final currentlySelectedMember = viewModel.selectedMember;
+
+    // Check if the selected member is already the one who paid
+    if (widget.expense.paidBy.first == currentlySelectedMember) {
+      // If it's the same member, do nothing
+      return;
+    }
+
+    // If a member was selected and it is different, update the expense
+    if (currentlySelectedMember != null &&
+        currentlySelectedMember != widget.expense.paidBy.first) {
+      // Notify the view model to refresh its data
+      viewModel.updateExpensePaidBy(widget.expense, currentlySelectedMember,
+          widget.expense.paidBy.first); // Ensure this updates the UI correctly
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final viewModel = Provider.of<ExpenseViewModel>(context);
@@ -124,33 +145,39 @@ class _ExpenseItemState extends State<ExpenseItem>
                       child: SizedBox(
                         width: 60,
                         height: 50,
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                          decoration: BoxDecoration(
-                            color: widget.expense.paidBy.first ==
-                                    viewModel.selectedMember
-                                ? const Color(0xffC9958C)
-                                : const Color(0xff95B47E),
-                            borderRadius: const BorderRadius.all(
-                              Radius.circular(15),
+                        child: GestureDetector(
+                          onTap:
+                              _changePaidByMember, // Call your function to change the member
+                          child: Container(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 8.0),
+                            decoration: BoxDecoration(
+                              color: widget.expense.paidBy.first ==
+                                      viewModel.selectedMember
+                                  ? const Color(0xffC9958C)
+                                  : const Color(0xff95B47E),
+                              borderRadius: const BorderRadius.all(
+                                Radius.circular(15),
+                              ),
+                              border: Border.all(
+                                color: Colors.white,
+                                width: viewModel.hasSelectedMemberInShared(
+                                        widget.expense)
+                                    ? 2.0
+                                    : 0.0,
+                              ),
                             ),
-                            border: Border.all(
-                              color: Colors.white,
-                              width: viewModel
-                                      .hasSelectedMemberInShared(widget.expense)
-                                  ? 2.0
-                                  : 0.0,
+                            child: Center(
+                              child: Text(
+                                widget.expense.paidBy.first.name,
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                ),
+                                overflow: TextOverflow.clip,
+                                maxLines: 1,
+                              ),
                             ),
                           ),
-                          child: Center(
-                              child: Text(
-                            widget.expense.paidBy.first.name,
-                            style: const TextStyle(
-                              fontSize: 16,
-                            ),
-                            overflow: TextOverflow.clip,
-                            maxLines: 1,
-                          )),
                         ),
                       ),
                     ),

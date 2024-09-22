@@ -176,7 +176,11 @@ class ExpenseViewModel extends ChangeNotifier {
   }
 
   Group? getGroupById(ObjectId id) {
-    return _groups.firstWhere((group) => group.id == id);
+    try {
+      return _groups.firstWhere((group) => group.id == id);
+    } catch (e) {
+      return null;
+    }
   }
 
   void updateGroupName(ObjectId groupId, String newName) async {
@@ -192,5 +196,12 @@ class ExpenseViewModel extends ChangeNotifier {
   List<Member> getMembersByGroupId(ObjectId groupId) {
     final group = _groups.firstWhere((g) => g.id == groupId);
     return group.members;
+  }
+
+  // Method to update an expense
+  void updateExpensePaidBy(
+      Expense expense, Member newPaidBy, Member oldPaidBy) {
+    _databaseService.updatePaidBy(expense, newPaidBy, oldPaidBy);
+    notifyListeners();
   }
 }
