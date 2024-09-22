@@ -119,15 +119,17 @@ class _GroupPageState extends State<GroupPage> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: const Text('Delete Groups'),
-          content: const Text(
-              'Are you sure you want to delete the selected groups?'),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(0.0), // Set your desired radius
+          ),
+          title: const Text('그룹 삭제'),
+          content: const Text('선택한 그룹을 삭제하시겠습니까?'),
           actions: [
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop(); // Close dialog
               },
-              child: const Text('Cancel'),
+              child: const Text('취소'),
             ),
             TextButton(
               onPressed: () {
@@ -141,7 +143,7 @@ class _GroupPageState extends State<GroupPage> {
                 Navigator.of(context).pop(); // Close dialog
                 setState(() {}); // Refresh the view
               },
-              child: const Text('Delete'),
+              child: const Text('삭제'),
             ),
           ],
         );
