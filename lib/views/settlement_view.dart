@@ -10,7 +10,8 @@ class SettlementView extends StatefulWidget {
   const SettlementView({super.key, required this.groupId});
   final ObjectId groupId;
 
-  Future<List<SettlementItem>> getSettlementItems(SettlementViewModel viewModel) async {
+  Future<List<SettlementItem>> getSettlementItems(
+      SettlementViewModel viewModel) async {
     Group? group = viewModel.getGroupById(groupId);
     if (group != null) {
       await viewModel.fetchReceipt(group);
@@ -31,7 +32,6 @@ class SettlementView extends StatefulWidget {
 }
 
 class _SettlementViewState extends State<SettlementView> {
-
   @override
   Widget build(BuildContext context) {
     return Consumer<SettlementViewModel>(
@@ -47,14 +47,9 @@ class _SettlementViewState extends State<SettlementView> {
             if (snapshot.hasData) {
               final List<SettlementItem> settlementItems = snapshot.data!;
               return Column(children: <Widget>[
-                const SizedBox(
-                  height: 10,
-                ),
                 Expanded(
                   child: SingleChildScrollView(
-                    child: Column(
-                      children: settlementItems
-                    ),
+                    child: Column(children: settlementItems),
                   ),
                 ),
               ]);

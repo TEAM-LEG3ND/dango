@@ -1,4 +1,3 @@
-import 'package:dango/models/models.dart';
 import 'package:dango/views/widgets/add_expense_item.dart';
 import 'package:dango/views/widgets/add_member_item.dart';
 import 'package:dango/views/widgets/expense_item.dart';

@@ -68,7 +68,7 @@ class _ExpensePageState extends State<ExpensePage> {
               SizedBox(width: 4),
               Text(
                 '뒤로',
-                style: TextStyle(fontSize: 20),
+                style: TextStyle(fontSize: 18),
               ),
             ],
           ),
@@ -93,7 +93,7 @@ class _ExpensePageState extends State<ExpensePage> {
                 SizedBox(width: 4),
                 Text(
                   '정산',
-                  style: TextStyle(fontSize: 20),
+                  style: TextStyle(fontSize: 18),
                 ),
                 SizedBox(width: 8),
                 Icon(Icons.arrow_forward),

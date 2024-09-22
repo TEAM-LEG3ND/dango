@@ -16,47 +16,44 @@ class SettlementPage extends StatefulWidget {
 class _SettlementPageState extends State<SettlementPage> {
   @override
   Widget build(BuildContext context) {
-    return Consumer<SettlementViewModel>(
-        builder: (context, viewModel, child) {
-          return Scaffold(
-            appBar: AppBarBase(
-                leading: const Row(
-                  children: [
-                    SizedBox(width: 8),
-                    Icon(Icons.arrow_back),
-                    SizedBox(width: 4),
-                    Text(
-                      '뒤로',
-                      style: TextStyle(fontSize: 20),
-                    ),
-                  ],
+    return Consumer<SettlementViewModel>(builder: (context, viewModel, child) {
+      return Scaffold(
+        appBar: AppBarBase(
+            leading: const Row(
+              children: [
+                SizedBox(width: 8),
+                Icon(Icons.arrow_back),
+                SizedBox(width: 4),
+                Text(
+                  '뒤로',
+                  style: TextStyle(fontSize: 18),
                 ),
-                title: const Text('정산'),
-                action: GestureDetector(
-                  onTap: () {
-                    viewModel.goHome();
-                  },
-                  child: const Row(
-                    children: [
-                      SizedBox(width: 4),
-                      Text(
-                        '홈으로',
-                        style: TextStyle(fontSize: 20),
-                      ),
-                      SizedBox(width: 8),
-                      Icon(Icons.home),
-                    ],
+              ],
+            ),
+            title: const Text('정산'),
+            action: GestureDetector(
+              onTap: () {
+                viewModel.goHome();
+              },
+              child: const Row(
+                children: [
+                  SizedBox(width: 4),
+                  Text(
+                    '홈으로',
+                    style: TextStyle(fontSize: 18),
                   ),
-                ),
-                onLeadingTap: () {
-                  viewModel.goBack();
-                }
+                  SizedBox(width: 5),
+                  Icon(Icons.home),
+                ],
+              ),
             ),
-            body: SettlementView(
-              groupId: widget.groupId,
-            ),
-          );
-        }
-    );
+            onLeadingTap: () {
+              viewModel.goBack();
+            }),
+        body: SettlementView(
+          groupId: widget.groupId,
+        ),
+      );
+    });
   }
 }

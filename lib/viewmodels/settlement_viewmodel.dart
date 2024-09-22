@@ -56,10 +56,13 @@ class SettlementViewModel extends ChangeNotifier {
       String to = expense.paidBy.first.name;
       double cost = expense.amount;
 
-      double costPerMember = (cost / expense.sharedWith.length * 100).floor() / 100;
+      double costPerMember =
+          (cost / expense.sharedWith.length * 100).floor() / 100;
       // 엔빵하고 나머지 비용 적립
       // todo 처리 고민 지금은 낸 사람이 냄
-      remainder += (cost - double.parse((costPerMember * expense.sharedWith.length).toStringAsFixed(2)));
+      remainder += (cost -
+          double.parse(
+              (costPerMember * expense.sharedWith.length).toStringAsFixed(2)));
 
       for (var member in expense.sharedWith) {
         String from = member.name;
@@ -78,6 +81,4 @@ class SettlementViewModel extends ChangeNotifier {
 
     _receipt[from]![to] = (_receipt[from]![to] ?? 0) + cost;
   }
-
-
 }
