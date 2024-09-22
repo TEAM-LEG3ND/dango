@@ -116,6 +116,20 @@ class ExpenseViewModel extends ChangeNotifier {
         });
   }
 
+  Member? getMemberByNameInGroup(ObjectId groupId, String? name) {
+    if (name != null) {
+      final group = getGroupById(groupId);
+      if (group != null) {
+        try {
+          return group.members.firstWhere((m) => m.name == name);
+        } catch (e) {
+          return null;
+        }
+      }
+    }
+    return null;
+  }
+
   Member? getMemberByName(String? name) {
     if (name != null) {
       String memberName = name;

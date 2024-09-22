@@ -147,8 +147,8 @@ class _AddExpenseDialogState extends State<AddExpenseDialog> {
                     child: TextButton(
                       onPressed: () {
                         // 비용 낸 멤버 가져오기
-                        Member? paidMember =
-                            viewModel.getMemberByName(selectedMember);
+                        Member? paidMember = viewModel.getMemberByNameInGroup(
+                            widget.groupId, selectedMember);
 
                         if (paidMember == null) {
                           debugPrint(

@@ -110,8 +110,8 @@ class _AddMemberDialogState extends State<AddMemberDialog> {
                           ? "New Member"
                           : _memberNameCtrl.text;
 
-                      Member? alreadyMember =
-                          viewModel.getMemberByName(memberName);
+                      Member? alreadyMember = viewModel.getMemberByNameInGroup(
+                          widget.groupId, memberName);
                       if (alreadyMember == null) {
                         viewModel.addMember(widget.groupId, memberName);
                         Navigator.of(context).pop(true); // Indicate success
