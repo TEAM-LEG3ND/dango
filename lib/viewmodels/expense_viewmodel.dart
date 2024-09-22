@@ -163,10 +163,6 @@ class ExpenseViewModel extends ChangeNotifier {
 
   List<Member> getMembersByGroupId(ObjectId groupId) {
     final group = _groups.firstWhere((g) => g.id == groupId);
-    print("amy");
-    print(group.members);
-    print(group.members.toList());
-    print("end");
     return group.members;
   }
 }

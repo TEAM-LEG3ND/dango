@@ -31,8 +31,10 @@ class _AddExpenseDialogState extends State<AddExpenseDialog> {
   Widget build(BuildContext context) {
     final viewModel = Provider.of<ExpenseViewModel>(context);
 
-    if (selectedMember == null && viewModel.members.isNotEmpty) {
-      selectedMember = viewModel.members.first.name;
+    List<Member> groupMembers = viewModel.getMembersByGroupId(widget.groupId);
+
+    if (selectedMember == null && groupMembers.isNotEmpty) {
+      selectedMember = groupMembers.first.name;
     }
 
     return Dialog(
@@ -49,7 +51,7 @@ class _AddExpenseDialogState extends State<AddExpenseDialog> {
                 child: Center(
                   child: DropdownButton<String>(
                       value: selectedMember,
-                      items: viewModel.members
+                      items: groupMembers
                           .map<DropdownMenuItem<String>>((Member member) {
                         return DropdownMenuItem<String>(
                           value: member.name,
