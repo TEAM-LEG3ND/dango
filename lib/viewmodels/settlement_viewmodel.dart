@@ -25,12 +25,10 @@ class SettlementViewModel extends ChangeNotifier {
 
   Future<void> fetchGroups() async {
     _groups = _databaseService.getAllGroups();
-    notifyListeners();
   }
 
   Future<void> fetchGroupMembers(Group group) async {
     _groupMembers = group.members;
-    notifyListeners();
   }
 
   void goBack() {
@@ -69,6 +67,7 @@ class SettlementViewModel extends ChangeNotifier {
           double.parse(
               (costPerMember * expense.sharedWith.length).toStringAsFixed(2)));
 
+      // 각 비용값 처리
       for (var member in expense.sharedWith) {
         String from = member.name;
         if (from != to) {
@@ -76,6 +75,8 @@ class SettlementViewModel extends ChangeNotifier {
         }
       }
     }
+    // 영수증 최적화 a->b, b->a 처리
+    optimizeReceipt();
   }
 
   void addItemToReceipt(String from, String to, double cost) {
@@ -85,5 +86,59 @@ class SettlementViewModel extends ChangeNotifier {
     }
 
     _receipt[from]![to] = (_receipt[from]![to] ?? 0) + cost;
+  }
+
+  void optimizeReceipt() {
+    // 첫 번째 단계: 값을 0으로 만들고 제거하지 않음
+    final entries = _receipt.entries.toList();
+
+    for (var entry in entries) {
+      String from = entry.key;
+      Map<String, double> toMap = entry.value;
+
+      for (var toEntry in toMap.entries) {
+        String to = toEntry.key;
+        double amount = toEntry.value;
+
+        // 반대 방향의 거래가 있는지 확인
+        if (_receipt.containsKey(to) && _receipt[to]!.containsKey(from)) {
+          double reverseAmount = _receipt[to]![from]!;
+
+          if (amount > reverseAmount) {
+            // from -> to 금액에서 to -> from 금액을 뺍니다.
+            _receipt[from]![to] = amount - reverseAmount;
+            _receipt[to]![from] = 0; // to -> from은 0으로 설정
+          } else if (amount < reverseAmount) {
+            // to -> from 금액에서 from -> to 금액을 뺍니다.
+            _receipt[to]![from] = reverseAmount - amount;
+            _receipt[from]![to] = 0; // from -> to는 0으로 설정
+          } else {
+            // 금액이 같다면 둘 다 0으로 설정합니다.
+            _receipt[from]![to] = 0;
+            _receipt[to]![from] = 0;
+          }
+        }
+      }
+    }
+
+    // 두 번째 단계: 값이 0인 항목들을 제거
+    _removeZeroEntries();
+  }
+
+  void _removeZeroEntries() {
+    // _receipt의 각 항목을 순회하면서 값이 0인 항목들을 제거
+    final entries = _receipt.entries.toList();
+
+    for (var entry in entries) {
+      String from = entry.key;
+      Map<String, double> toMap = entry.value;
+
+      toMap.removeWhere((to, amount) => amount == 0);
+
+      // toMap이 비었으면 해당 항목도 제거
+      if (toMap.isEmpty) {
+        _receipt.remove(from);
+      }
+    }
   }
 }
