@@ -3,11 +3,7 @@
 library;
 
 import 'package:realm/realm.dart';
-
 part 'models.realm.dart';
-
 part 'member_model.dart';
 part 'expense_model.dart';
 part 'group_model.dart';
-part 'list_model.dart';
-
