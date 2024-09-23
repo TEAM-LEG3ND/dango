@@ -75,7 +75,6 @@ class SettlementViewModel extends ChangeNotifier {
         }
       }
     }
-    print(_receipt);
     // 영수증 최적화 a->b, b->a 처리
     optimizeReceipt();
   }
