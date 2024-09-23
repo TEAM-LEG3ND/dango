@@ -75,7 +75,7 @@ class SettlementViewModel extends ChangeNotifier {
         }
       }
     }
-
+    print(_receipt);
     // 영수증 최적화 a->b, b->a 처리
     optimizeReceipt();
   }
@@ -90,6 +90,7 @@ class SettlementViewModel extends ChangeNotifier {
   }
 
   void optimizeReceipt() {
+    // 첫 번째 단계: 값을 0으로 만들고 제거하지 않음
     final entries = _receipt.entries.toList();
 
     for (var entry in entries) {
@@ -107,31 +108,37 @@ class SettlementViewModel extends ChangeNotifier {
           if (amount > reverseAmount) {
             // from -> to 금액에서 to -> from 금액을 뺍니다.
             _receipt[from]![to] = amount - reverseAmount;
-            // to -> from은 제거합니다.
-            _receipt[to]!.remove(from);
-            if (_receipt[to]!.isEmpty) {
-              _receipt.remove(to);
-            }
+            _receipt[to]![from] = 0; // to -> from은 0으로 설정
           } else if (amount < reverseAmount) {
             // to -> from 금액에서 from -> to 금액을 뺍니다.
             _receipt[to]![from] = reverseAmount - amount;
-            // from -> to는 제거합니다.
-            _receipt[from]!.remove(to);
-            if (_receipt[from]!.isEmpty) {
-              _receipt.remove(from);
-            }
+            _receipt[from]![to] = 0; // from -> to는 0으로 설정
           } else {
-            // 금액이 같다면 둘 다 제거합니다.
-            _receipt[from]!.remove(to);
-            _receipt[to]!.remove(from);
-            if (_receipt[from]!.isEmpty) {
-              _receipt.remove(from);
-            }
-            if (_receipt[to]!.isEmpty) {
-              _receipt.remove(to);
-            }
+            // 금액이 같다면 둘 다 0으로 설정합니다.
+            _receipt[from]![to] = 0;
+            _receipt[to]![from] = 0;
           }
         }
+      }
+    }
+
+    // 두 번째 단계: 값이 0인 항목들을 제거
+    _removeZeroEntries();
+  }
+
+  void _removeZeroEntries() {
+    // _receipt의 각 항목을 순회하면서 값이 0인 항목들을 제거
+    final entries = _receipt.entries.toList();
+
+    for (var entry in entries) {
+      String from = entry.key;
+      Map<String, double> toMap = entry.value;
+
+      toMap.removeWhere((to, amount) => amount == 0);
+
+      // toMap이 비었으면 해당 항목도 제거
+      if (toMap.isEmpty) {
+        _receipt.remove(from);
       }
     }
   }
