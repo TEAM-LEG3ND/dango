@@ -1,3 +1,5 @@
+import 'package:dango/utils/app_localization.dart';
+import 'package:dango/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:realm/realm.dart';
@@ -79,11 +81,13 @@ class _AddExpenseDialogState extends State<AddExpenseDialog> {
                           controller: _expenseDescriptionCtrl,
                           textAlign: TextAlign.center,
                           textAlignVertical: TextAlignVertical.center,
-                          decoration: const InputDecoration(
-                            hintText: '비용에 대한 설명을 적으세요.', // Placeholder text
+                          decoration: InputDecoration(
+                            hintText: (AppLocalizations.translate(
+                                    'cost_description', context) ??
+                                AppConstants.errorText), // Placeholder text
                             border: InputBorder.none, // No border
-                            contentPadding: EdgeInsets.all(
-                                16.0), // Padding inside the text field
+                            contentPadding: const EdgeInsets.all(
+                                13.0), // Padding inside the text field
                           ),
                         ),
                       ),
@@ -132,7 +136,9 @@ class _AddExpenseDialogState extends State<AddExpenseDialog> {
                           borderRadius: BorderRadius.zero, // No rounded corners
                         ),
                       ),
-                      child: const Text('닫기'),
+                      child: Text(
+                          AppLocalizations.translate('close', context) ??
+                              AppConstants.errorText),
                     ),
                   ),
                   Container(
@@ -186,7 +192,8 @@ class _AddExpenseDialogState extends State<AddExpenseDialog> {
                           borderRadius: BorderRadius.zero, // No rounded corners
                         ),
                       ),
-                      child: const Text('저장'),
+                      child: Text(AppLocalizations.translate('save', context) ??
+                          AppConstants.errorText),
                     ),
                   ),
                 ],

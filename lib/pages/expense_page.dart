@@ -1,3 +1,5 @@
+import 'package:dango/utils/app_localization.dart';
+import 'package:dango/utils/constants.dart';
 import 'package:dango/viewmodels/expense_viewmodel.dart';
 import 'package:dango/views/widgets/app_bar_base.dart';
 import 'package:flutter/material.dart';
@@ -61,14 +63,15 @@ class _ExpensePageState extends State<ExpensePage> {
       },
       child: Scaffold(
         appBar: AppBarBase(
-          leading: const Row(
+          leading: Row(
             children: [
-              SizedBox(width: 8),
-              Icon(Icons.arrow_back),
-              SizedBox(width: 4),
+              const SizedBox(width: 8),
+              const Icon(Icons.arrow_back),
+              const SizedBox(width: 4),
               Text(
-                '뒤로',
-                style: TextStyle(fontSize: 18),
+                (AppLocalizations.translate('back', context) ??
+                    AppConstants.errorText),
+                style: const TextStyle(fontSize: 18),
               ),
             ],
           ),
@@ -88,15 +91,16 @@ class _ExpensePageState extends State<ExpensePage> {
             onTap: () {
               viewModel.goSettlementPage(widget.groupId);
             },
-            child: const Row(
+            child: Row(
               children: [
-                SizedBox(width: 4),
+                const SizedBox(width: 4),
                 Text(
-                  '정산',
-                  style: TextStyle(fontSize: 18),
+                  (AppLocalizations.translate('settle', context) ??
+                      AppConstants.errorText),
+                  style: const TextStyle(fontSize: 18),
                 ),
-                SizedBox(width: 8),
-                Icon(Icons.arrow_forward),
+                const SizedBox(width: 8),
+                const Icon(Icons.arrow_forward),
               ],
             ),
           ),

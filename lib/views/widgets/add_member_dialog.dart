@@ -1,3 +1,5 @@
+import 'package:dango/utils/app_localization.dart';
+import 'package:dango/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:realm/realm.dart';
@@ -48,11 +50,12 @@ class _AddMemberDialogState extends State<AddMemberDialog> {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 8.0),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
                       child: Text(
-                        '멤버 추가',
-                        style: TextStyle(
+                        (AppLocalizations.translate('add_member', context) ??
+                            AppConstants.errorText),
+                        style: const TextStyle(
                           fontSize: 20,
                         ),
                       ),
@@ -65,10 +68,12 @@ class _AddMemberDialogState extends State<AddMemberDialog> {
                         controller: _memberNameCtrl,
                         textAlign: TextAlign.center,
                         textAlignVertical: TextAlignVertical.center,
-                        decoration: const InputDecoration(
-                          hintText: '이름',
+                        decoration: InputDecoration(
+                          hintText:
+                              (AppLocalizations.translate('name', context) ??
+                                  AppConstants.errorText),
                           border: InputBorder.none,
-                          contentPadding: EdgeInsets.all(0.0),
+                          contentPadding: const EdgeInsets.all(0.0),
                         ),
                         onChanged: (text) => _onMemberNameChanged(),
                       ),
@@ -107,7 +112,8 @@ class _AddMemberDialogState extends State<AddMemberDialog> {
                         borderRadius: BorderRadius.zero,
                       ),
                     ),
-                    child: const Text('닫기'),
+                    child: Text(AppLocalizations.translate('close', context) ??
+                        AppConstants.errorText),
                   ),
                 ),
                 Container(
@@ -129,7 +135,9 @@ class _AddMemberDialogState extends State<AddMemberDialog> {
                           widget.groupId, memberName);
                       if (alreadyMember != null) {
                         setState(() {
-                          _errorMessage = "이름이 이미 존재합니다.";
+                          _errorMessage = (AppLocalizations.translate(
+                                  'name_already_exists', context) ??
+                              AppConstants.errorText);
                         });
                       } else {
                         viewModel.addMember(widget.groupId, memberName);
@@ -143,7 +151,8 @@ class _AddMemberDialogState extends State<AddMemberDialog> {
                         borderRadius: BorderRadius.zero,
                       ),
                     ),
-                    child: const Text('저장'),
+                    child: Text(AppLocalizations.translate('save', context) ??
+                        AppConstants.errorText),
                   ),
                 ),
               ],

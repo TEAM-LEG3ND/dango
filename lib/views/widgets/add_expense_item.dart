@@ -1,3 +1,5 @@
+import 'package:dango/utils/app_localization.dart';
+import 'package:dango/utils/constants.dart';
 import 'package:flutter/cupertino.dart';
 
 class AddExpenseItem extends StatelessWidget {
@@ -22,9 +24,9 @@ class AddExpenseItem extends StatelessWidget {
                 alignment: Alignment.center,
                 color: const Color(0xffFFFFF1),
                 height: 80,
-                child: const Text(
-                  '+ 추가',
-                  style: TextStyle(
+                child: Text(
+                  '+ ${AppLocalizations.translate('add', context) ?? AppConstants.errorText}',
+                  style: const TextStyle(
                     fontSize: 18,
                   ),
                 ),

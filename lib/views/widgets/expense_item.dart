@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:dango/utils/app_localization.dart';
+import 'package:dango/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -268,9 +270,11 @@ class _ExpenseItemState extends State<ExpenseItem>
                       padding: const EdgeInsets.all(8.0),
                       child: TextButton(
                         onPressed: _cancelDelete,
-                        child: const Text(
-                          '삭제 취소 ↵',
-                          style: TextStyle(
+                        child: Text(
+                          (AppLocalizations.translate(
+                                  'cancel_delete', context) ??
+                              AppConstants.errorText),
+                          style: const TextStyle(
                             color: Colors.black45,
                             fontSize: 18,
                           ),

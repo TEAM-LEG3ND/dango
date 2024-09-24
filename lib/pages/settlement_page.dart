@@ -1,3 +1,5 @@
+import 'package:dango/utils/app_localization.dart';
+import 'package:dango/utils/constants.dart';
 import 'package:dango/viewmodels/settlement_viewmodel.dart';
 import 'package:dango/views/settlement_view.dart';
 import 'package:dango/views/widgets/app_bar_base.dart';
@@ -24,31 +26,34 @@ class _SettlementPageState extends State<SettlementPage> {
     return Consumer<SettlementViewModel>(builder: (context, viewModel, child) {
       return Scaffold(
         appBar: AppBarBase(
-            leading: const Row(
+            leading: Row(
               children: [
-                SizedBox(width: 8),
-                Icon(Icons.arrow_back),
-                SizedBox(width: 4),
+                const SizedBox(width: 8),
+                const Icon(Icons.arrow_back),
+                const SizedBox(width: 4),
                 Text(
-                  '뒤로',
-                  style: TextStyle(fontSize: 18),
+                  (AppLocalizations.translate('back', context) ??
+                      AppConstants.errorText),
+                  style: const TextStyle(fontSize: 18),
                 ),
               ],
             ),
-            title: const Text('정산'),
+            title: Text(AppLocalizations.translate('settle', context) ??
+                AppConstants.errorText),
             action: GestureDetector(
               onTap: () {
                 viewModel.goHome();
               },
-              child: const Row(
+              child: Row(
                 children: [
-                  SizedBox(width: 4),
+                  const SizedBox(width: 4),
                   Text(
-                    '홈으로',
-                    style: TextStyle(fontSize: 18),
+                    (AppLocalizations.translate('home', context) ??
+                        AppConstants.errorText),
+                    style: const TextStyle(fontSize: 18),
                   ),
-                  SizedBox(width: 5),
-                  Icon(Icons.home),
+                  const SizedBox(width: 5),
+                  const Icon(Icons.home),
                 ],
               ),
             ),
