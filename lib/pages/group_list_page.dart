@@ -1,5 +1,8 @@
 import 'package:dango/models/models.dart';
 import 'package:dango/pages/expense_page.dart';
+import 'package:dango/services/language_service.dart';
+import 'package:dango/utils/app_localization.dart';
+import 'package:dango/utils/constants.dart';
 import 'package:dango/viewmodels/expense_viewmodel.dart';
 import 'package:dango/views/list_view.dart';
 import 'package:dango/views/widgets/add_member_dialog.dart';
@@ -24,19 +27,37 @@ class _GroupPageState extends State<GroupPage> {
 
     return Scaffold(
       appBar: AppBarBase(
-        leading: IconButton(
-          icon: _isEditing ? const Text('완료') : const Icon(Icons.edit),
-          onPressed: () {
-            setState(() {
-              _isEditing = !_isEditing; // Toggle editing mode
-              if (!_isEditing) {
-                _selectedGroups
-                    .clear(); // Clear selections when exiting edit mode
-              }
-            });
-          },
+        leading: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Flexible(
+              child: IconButton(
+                icon: const Icon(Icons.settings),
+                onPressed: () {
+                  _showSettingsDialog(context);
+                },
+              ),
+            ),
+            Flexible(
+              child: IconButton(
+                icon: _isEditing
+                    ? const Icon(Icons.view_headline)
+                    : const Icon(Icons.edit),
+                onPressed: () {
+                  setState(() {
+                    _isEditing = !_isEditing; // Toggle editing mode
+                    if (!_isEditing) {
+                      _selectedGroups
+                          .clear(); // Clear selections when exiting edit mode
+                    }
+                  });
+                },
+              ),
+            ),
+          ],
         ),
-        title: const Text('List'),
+        title: Text(AppLocalizations.translate('list', context) ??
+            AppConstants.errorText),
         action: _isEditing
             ? IconButton(
                 icon: const Icon(Icons.delete, color: Colors.black),
@@ -114,6 +135,49 @@ class _GroupPageState extends State<GroupPage> {
     );
   }
 
+  void _showSettingsDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text(AppLocalizations.translate('settings', context) ??
+              AppConstants.errorText),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text('English'),
+                  Switch(
+                    value: Provider.of<LanguageService>(context)
+                            .locale
+                            .languageCode ==
+                        'ko',
+                    onChanged: (value) {
+                      Provider.of<LanguageService>(context, listen: false)
+                          .toggleLanguage();
+                    },
+                  ),
+                  const Text('한글'),
+                ],
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close dialog
+              },
+              child: Text(AppLocalizations.translate('close', context) ??
+                  AppConstants.errorText),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   void _showDeleteConfirmationDialog(BuildContext context) {
     showDialog(
       context: context,
@@ -122,28 +186,32 @@ class _GroupPageState extends State<GroupPage> {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(0.0), // Set your desired radius
           ),
-          title: const Text('그룹 삭제'),
-          content: const Text('선택한 그룹을 삭제하시겠습니까?'),
+          title: Text(AppLocalizations.translate('group_delete', context) ??
+              AppConstants.errorText),
+          content: Text(AppLocalizations.translate(
+                  'group_delete_confirmation', context) ??
+              AppConstants.errorText),
           actions: [
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop(); // Close dialog
               },
-              child: const Text('취소'),
+              child: Text(AppLocalizations.translate('cancel', context) ??
+                  AppConstants.errorText),
             ),
             TextButton(
               onPressed: () {
                 final viewModel =
                     Provider.of<ExpenseViewModel>(context, listen: false);
                 for (var group in _selectedGroups) {
-                  viewModel.removeGroup(
-                      group); // Assuming you have this method in your view model
+                  viewModel.removeGroup(group);
                 }
                 _selectedGroups.clear(); // Clear selections after deletion
                 Navigator.of(context).pop(); // Close dialog
                 setState(() {}); // Refresh the view
               },
-              child: const Text('삭제'),
+              child: Text(AppLocalizations.translate('delete', context) ??
+                  AppConstants.errorText),
             ),
           ],
         );

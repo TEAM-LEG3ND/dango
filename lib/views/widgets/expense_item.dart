@@ -1,8 +1,9 @@
 import 'dart:async';
-
+import 'package:dango/services/language_service.dart';
+import 'package:dango/utils/app_localization.dart';
+import 'package:dango/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
 import '../../models/models.dart';
 import '../../viewmodels/expense_viewmodel.dart';
 
@@ -36,14 +37,14 @@ class _ExpenseItemState extends State<ExpenseItem>
     );
     _offsetAnimation = Tween<Offset>(
       begin: Offset.zero,
-      end: const Offset(-0.2, 0.0), // 스와이프 이동 거리
+      end: const Offset(-0.2, 0.0), // Swipe distance
     ).animate(_controller);
   }
 
   @override
   void dispose() {
     _controller.dispose();
-    _deleteTimer?.cancel(); // 타이머가 실행 중이라면 취소
+    _deleteTimer?.cancel(); // Cancel timer if active
     super.dispose();
   }
 
@@ -72,7 +73,7 @@ class _ExpenseItemState extends State<ExpenseItem>
 
   void _cancelDelete() {
     if (_deleteTimer != null && _deleteTimer!.isActive) {
-      _deleteTimer!.cancel(); // 타이머 취소
+      _deleteTimer!.cancel(); // Cancel timer
       setState(() {
         _controller.reverse();
         _isDeleteScheduled = false;
@@ -82,28 +83,23 @@ class _ExpenseItemState extends State<ExpenseItem>
 
   void _changePaidByMember() async {
     final viewModel = Provider.of<ExpenseViewModel>(context, listen: false);
-
-    // Get the currently selected member
     final currentlySelectedMember = viewModel.selectedMember;
 
-    // Check if the selected member is already the one who paid
     if (widget.expense.paidBy.first == currentlySelectedMember) {
-      // If it's the same member, do nothing
-      return;
+      return; // Do nothing if it's the same member
     }
 
-    // If a member was selected and it is different, update the expense
     if (currentlySelectedMember != null &&
         currentlySelectedMember != widget.expense.paidBy.first) {
-      // Notify the view model to refresh its data
-      viewModel.updateExpensePaidBy(widget.expense, currentlySelectedMember,
-          widget.expense.paidBy.first); // Ensure this updates the UI correctly
+      viewModel.updateExpensePaidBy(
+          widget.expense, currentlySelectedMember, widget.expense.paidBy.first);
     }
   }
 
   @override
   Widget build(BuildContext context) {
     final viewModel = Provider.of<ExpenseViewModel>(context);
+    final languageService = Provider.of<LanguageService>(context);
 
     return Padding(
       padding: const EdgeInsets.all(0),
@@ -118,10 +114,9 @@ class _ExpenseItemState extends State<ExpenseItem>
         onTap: () => viewModel.onToggleExpense(widget.expense),
         child: Stack(
           children: [
-            // 배경색을 표시하는 레이어
             Positioned.fill(
               child: Container(
-                color: Colors.red.shade400, // 스와이프 되는 부분의 배경색
+                color: Colors.red.shade400, // Background color when swiped
               ),
             ),
             SlideTransition(
@@ -132,11 +127,11 @@ class _ExpenseItemState extends State<ExpenseItem>
                       ? const Color(0xffC9958C)
                       : const Color(0xffFFFFF1),
                   border: Border.all(
-                    color: const Color(0xffDEF2CF), // Border color
-                    width: 0.3, // Adjust this value to control thickness
-                  ), // Border color
+                    color: const Color(0xffDEF2CF),
+                    width: 0.3,
+                  ),
                 ),
-                height: 80,
+                height: 81,
                 child: Row(
                   children: [
                     Padding(
@@ -146,8 +141,7 @@ class _ExpenseItemState extends State<ExpenseItem>
                         width: 60,
                         height: 50,
                         child: GestureDetector(
-                          onTap:
-                              _changePaidByMember, // Call your function to change the member
+                          onTap: _changePaidByMember,
                           child: Container(
                             padding:
                                 const EdgeInsets.symmetric(horizontal: 8.0),
@@ -167,15 +161,60 @@ class _ExpenseItemState extends State<ExpenseItem>
                                     : 0.0,
                               ),
                             ),
-                            child: Center(
-                              child: Text(
-                                widget.expense.paidBy.first.name,
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                ),
-                                overflow: TextOverflow.clip,
-                                maxLines: 1,
-                              ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment
+                                  .center, // Center horizontally
+                              children: [
+                                // Check if the language is Korean
+                                if (languageService.locale.languageCode ==
+                                    'ko') ...[
+                                  // Show "paid this" text first for Korean
+                                  Text(
+                                    (AppLocalizations.translate(
+                                            'paid_this', context) ??
+                                        AppConstants.errorText),
+                                    style: const TextStyle(
+                                      fontSize: 10,
+                                      color: Color.fromARGB(255, 0, 122, 170),
+                                    ),
+                                    overflow: TextOverflow.clip,
+                                    maxLines: 1,
+                                  ),
+                                  const SizedBox(height: 0),
+                                  Text(
+                                    widget.expense.paidBy.first.name,
+                                    style: const TextStyle(
+                                      fontSize: 16,
+                                    ),
+                                    overflow: TextOverflow.clip,
+                                    maxLines: 1,
+                                  ),
+                                ] else ...[
+                                  // Default order for other languages
+                                  Text(
+                                    widget.expense.paidBy.first.name,
+                                    style: const TextStyle(
+                                      fontSize: 16,
+                                    ),
+                                    overflow: TextOverflow.clip,
+                                    maxLines: 1,
+                                  ),
+                                  const SizedBox(height: 1),
+                                  Text(
+                                    (AppLocalizations.translate(
+                                            'paid_this', context) ??
+                                        AppConstants.errorText),
+                                    style: TextStyle(
+                                      fontSize: 10,
+                                      color: const Color.fromARGB(
+                                          255, 0, 122, 170),
+                                    ),
+                                    overflow: TextOverflow.clip,
+                                    maxLines: 1,
+                                  ),
+                                ],
+                              ],
                             ),
                           ),
                         ),
@@ -189,43 +228,55 @@ class _ExpenseItemState extends State<ExpenseItem>
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             const Spacer(),
-                            // 설명
-                            Text(
-                              widget.expense.description,
-                              style: const TextStyle(
-                                fontSize: 18,
-                              ),
-                              overflow: TextOverflow.clip,
-                              maxLines: 1,
+                            // Description and Cost on the same line
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Expanded(
+                                  child: Text(
+                                    widget.expense.description,
+                                    style: const TextStyle(
+                                      fontSize: 18,
+                                    ),
+                                    overflow: TextOverflow.clip,
+                                    maxLines: 1,
+                                  ),
+                                ),
+                                Text(
+                                  '\$ ${widget.expense.amount.toString()}',
+                                  style: const TextStyle(
+                                    fontSize: 18,
+                                  ),
+                                  overflow: TextOverflow.clip,
+                                  maxLines: 1,
+                                ),
+                                const SizedBox(width: 8),
+                              ],
                             ),
-                            const Spacer(),
-                            // 공유 멤버 리스트
-                            Text(
-                              widget.expense.sharedWith
-                                  .map((member) => member.name.trim())
-                                  .join(', '),
-                              style: const TextStyle(
-                                fontSize: 14,
+                            const SizedBox(
+                                height:
+                                    4), // Space below the description and cost
+                            // Shared members text
+                            if (languageService.locale.languageCode ==
+                                'ko') ...[
+                              // Korean: "shared this" first
+                              Text(
+                                '${AppLocalizations.translate('shared_this', context) ?? AppConstants.errorText} ${widget.expense.sharedWith.map((member) => member.name.trim()).join(', ')}',
+                                style: const TextStyle(
+                                  fontSize: 13,
+                                ),
                               ),
-                            ),
+                            ] else ...[
+                              // Default order for other languages
+                              Text(
+                                '${widget.expense.sharedWith.map((member) => member.name.trim()).join(', ')} ${AppLocalizations.translate('shared_this', context) ?? AppConstants.errorText}',
+                                style: const TextStyle(
+                                  fontSize: 13,
+                                ),
+                              ),
+                            ],
                             const Spacer(),
                           ],
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      width: 100,
-                      child: Container(
-                        alignment: Alignment.centerRight,
-                        padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                        //color: Colors.blue,
-                        child: Text(
-                          '\$ ${widget.expense.amount.toString()}',
-                          style: const TextStyle(
-                            fontSize: 18,
-                          ),
-                          overflow: TextOverflow.clip,
-                          maxLines: 1,
                         ),
                       ),
                     ),
@@ -237,8 +288,7 @@ class _ExpenseItemState extends State<ExpenseItem>
               animation: _controller,
               builder: (context, child) {
                 return Positioned(
-                  right:
-                      (_controller.value * 65) - 50, // 아이콘이 리스트와 함께 이동하도록 동기화
+                  right: (_controller.value * 65) - 50,
                   top: 0,
                   bottom: 0,
                   child: IconButton(
@@ -268,9 +318,11 @@ class _ExpenseItemState extends State<ExpenseItem>
                       padding: const EdgeInsets.all(8.0),
                       child: TextButton(
                         onPressed: _cancelDelete,
-                        child: const Text(
-                          '삭제 취소 ↵',
-                          style: TextStyle(
+                        child: Text(
+                          (AppLocalizations.translate(
+                                  'cancel_delete', context) ??
+                              AppConstants.errorText),
+                          style: const TextStyle(
                             color: Colors.black45,
                             fontSize: 18,
                           ),
