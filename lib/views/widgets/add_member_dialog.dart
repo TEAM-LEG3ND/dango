@@ -131,6 +131,16 @@ class _AddMemberDialogState extends State<AddMemberDialog> {
                           ? "New Member"
                           : _memberNameCtrl.text;
 
+                      // Check if the member name is longer than 5 characters
+                      if (memberName.length > 5) {
+                        setState(() {
+                          _errorMessage = (AppLocalizations.translate(
+                                  'name_too_long', context) ??
+                              AppConstants.errorText);
+                        });
+                        return;
+                      }
+
                       Member? alreadyMember = viewModel.getMemberByNameInGroup(
                           widget.groupId, memberName);
                       if (alreadyMember != null) {
