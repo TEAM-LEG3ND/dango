@@ -29,6 +29,7 @@ class AppLocalizations {
       'shared_this': 'shared this',
       'settle': 'Settle',
       'settings': 'Settings',
+      'currency': '\$',
     },
     'ko': {
       'add': '추가',
@@ -51,6 +52,7 @@ class AppLocalizations {
       'shared_this': '같이 쓴 사람들:',
       'settle': '정산',
       'settings': '설정',
+      'currency': '\u20A9',
     },
   };
 

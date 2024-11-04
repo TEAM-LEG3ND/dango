@@ -99,11 +99,15 @@ class _AddExpenseDialogState extends State<AddExpenseDialog> {
                           controller: _expenseLabelCtrl,
                           textAlign: TextAlign.center,
                           textAlignVertical: TextAlignVertical.center,
-                          decoration: const InputDecoration(
-                            prefixText: '\$ ',
-                            hintText: '\$0', // Placeholder text
+                          decoration: InputDecoration(
+                            prefixText: '${AppLocalizations.translate(
+                                'currency', context) ??
+                                AppConstants.errorText} ',
+                            hintText: '${AppLocalizations.translate(
+                                'currency', context) ??
+                                AppConstants.errorText}0', // Placeholder text
                             border: InputBorder.none, // No border
-                            contentPadding: EdgeInsets.all(
+                            contentPadding: const EdgeInsets.all(
                                 16.0), // Padding inside the text field
                           ),
                         ),
