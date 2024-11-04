@@ -1,5 +1,8 @@
 import 'package:flutter/cupertino.dart';
 
+import '../../utils/app_localization.dart';
+import '../../utils/constants.dart';
+
 class SettlementItem extends StatelessWidget {
   const SettlementItem({
     super.key,
@@ -39,7 +42,9 @@ class SettlementItem extends StatelessWidget {
               ),
               SizedBox(
                 width: 100,
-                child: Text('\$ $cost',
+                child: Text('${AppLocalizations.translate(
+                    'currency', context) ??
+                    AppConstants.errorText} $cost',
                     style: const TextStyle(
                       fontSize: 18,
                     )),

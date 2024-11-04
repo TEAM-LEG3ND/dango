@@ -31,6 +31,8 @@ class _ExpenseViewState extends State<ExpenseView> {
         // Ensure _group is updated from viewModel if necessary
         final group = viewModel.getGroupById(widget.groupId);
 
+        const int memberLimit = 30;
+
         if (group == null) {
           return Scaffold(
             appBar: AppBar(
@@ -76,6 +78,7 @@ class _ExpenseViewState extends State<ExpenseView> {
                         ...group.members.map((member) => MemberItem(
                               member: member,
                             )),
+                        if (group.members.length < memberLimit)
                         AddMemberItem(addMember: () {
                           viewModel.showAddMemberPopup(context, widget.groupId);
                         }),

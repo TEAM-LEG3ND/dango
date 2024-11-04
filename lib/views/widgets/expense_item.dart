@@ -205,9 +205,9 @@ class _ExpenseItemState extends State<ExpenseItem>
                                     (AppLocalizations.translate(
                                             'paid_this', context) ??
                                         AppConstants.errorText),
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       fontSize: 10,
-                                      color: const Color.fromARGB(
+                                      color: Color.fromARGB(
                                           255, 0, 122, 170),
                                     ),
                                     overflow: TextOverflow.clip,
@@ -243,7 +243,9 @@ class _ExpenseItemState extends State<ExpenseItem>
                                   ),
                                 ),
                                 Text(
-                                  '\$ ${widget.expense.amount.toString()}',
+                                  '${AppLocalizations.translate(
+                                      'currency', context) ??
+                                      AppConstants.errorText} ${widget.expense.amount.toString()}',
                                   style: const TextStyle(
                                     fontSize: 18,
                                   ),
